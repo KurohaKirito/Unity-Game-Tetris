@@ -1,0 +1,105 @@
+﻿using System.Collections.Generic;
+using Tetris.Utility;
+using UnityEngine;
+
+namespace Tetris.Manager
+{
+    /// <summary>
+    /// 随机生成形状管理类
+    /// </summary>
+    public static class RandomManager
+    {
+        /// <summary>
+        /// 当前形状
+        /// </summary>
+        public static ShapeInfo currentTetrisShape;
+
+        /// <summary>
+        /// 所有的颜色
+        /// </summary>
+        private static List<Sprite> forwardColors;
+
+        /// <summary>
+        /// 背景色
+        /// </summary>
+        private static Sprite backColor;
+
+        /// <summary>
+        /// 颜色字典
+        /// </summary>
+        private static readonly Dictionary<string, int> colorDictionary = new Dictionary<string, int>();
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="nodeColors">所有的结点颜色</param>
+        /// <param name="backNodeColor">背景色</param>
+        public static void Init(List<Sprite> nodeColors, Sprite backNodeColor)
+        {
+            if (nodeColors == null || nodeColors.Count <= 0)
+            {
+                Debug.LogError("随机器初始化失败!");
+                return;
+            }
+            
+            forwardColors = nodeColors;
+            backColor = backNodeColor;
+
+            for (var i = 0; i < forwardColors.Count; i++)
+            {
+                colorDictionary.Add(forwardColors[i].name, i);
+            }
+        }
+        
+        /// <summary>
+        /// 生成初始形状
+        /// </summary>
+        public static void InstantiateOriginShapes()
+        {
+            RandomUtility.RandomShape(forwardColors, out currentTetrisShape);
+            RandomUtility.RandomShape(forwardColors, out TipsManager.tipOne);
+            RandomUtility.RandomShape(forwardColors, out TipsManager.tipTwo);
+        }
+        
+        /// <summary>
+        /// 生成下一个形状
+        /// </summary>
+        public static void NextShape()
+        {
+            currentTetrisShape = TipsManager.tipOne;
+            TipsManager.tipOne = TipsManager.tipTwo;
+            RandomUtility.RandomShape(forwardColors, out TipsManager.tipTwo);
+        }
+
+        /// <summary>
+        /// 获取颜色索引
+        /// </summary>
+        /// <param name="colorName">颜色名称</param>
+        /// <returns></returns>
+        public static int GetColorIndexByName(string colorName)
+        {
+            if (colorDictionary.ContainsKey(colorName))
+            {
+                return colorDictionary[colorName];
+            }
+
+            // 背景返回 -1
+            return -1;
+        }
+        
+        /// <summary>
+        /// 获取颜色
+        /// </summary>
+        /// <param name="colorIndex">颜色索引</param>
+        /// <returns></returns>
+        public static Sprite GetColorByIndex(int colorIndex)
+        {
+            if (colorIndex >= 0 && colorIndex < forwardColors.Count)
+            {
+                return forwardColors[colorIndex];
+            }
+
+            return backColor;
+        }
+    }
+}

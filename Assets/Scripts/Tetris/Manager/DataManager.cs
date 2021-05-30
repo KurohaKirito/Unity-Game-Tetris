@@ -267,7 +267,8 @@ namespace Tetris.Manager
         /// </summary>
         /// <param name="number">增加的分数</param>
         /// <param name="reset">是否重置游戏</param>
-        public static void UpdateScoreLevel(int number = 0, bool reset = false, bool init = false)
+        /// <param name="init">是否初始化游戏</param>
+        public static void UpdateScoreLevel(int number = 0, bool init = false, bool reset = false)
         {
             // TODO: 制定详细的等级规则, 目前就是 1000 分 1 个等级
             // 重置游戏, 分数清空

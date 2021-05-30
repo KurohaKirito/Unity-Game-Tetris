@@ -114,7 +114,7 @@ namespace Utility
         /// <param name="action">调度方法</param>
         /// <param name="count">调度次数, 负数为永久</param>
         /// <returns>定时器的标签值</returns>
-        public static int RegisterClock(float time, Action action, int count)
+        public static int RegisterClock(float time, int count, Action action)
         {
             // 创建新的定时器
             var scheduler = new Clock

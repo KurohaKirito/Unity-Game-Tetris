@@ -64,13 +64,13 @@ namespace Tetris.Utility
         }
         
         /// <summary>
-        /// 刷新特定节点的显示
+        /// 刷新当前形状的显示
         /// </summary>
-        /// <param name="shape">形状</param>
         /// <param name="backColor">背景色</param>
-        /// <typeparam name="T">形状类型</typeparam>
-        public static void RefreshNodeDisplay<T>(T shape, Sprite backColor) where T : Shape.TetrisShape
+        public static void RefreshCurrentShapeDisplay(Sprite backColor)
         {
+            var shape = RandomManager.currentTetrisShape.shape;
+            
             // 擦除旧形状
             foreach (var node in shape.GetNodesInfo())
             {

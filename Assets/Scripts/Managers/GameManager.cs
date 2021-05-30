@@ -31,18 +31,15 @@ namespace Managers
         [SerializeField]
         private Transform tipTwoRowsParent;
 
-        [Header("速度设置")]
-        public float speedDown = 0.2f;
-        private const float SPEED_LEFT = 0.2f;
-        private const float SPEED_RIGHT = 1f;
+        [HideInInspector]
+        public float speedDown;
+        private const float SPEED_LEFT = 0.15f;
+        private const float SPEED_RIGHT = 0.15f;
 
         [Header("时钟设置")]
         public int clockDown;
         private int clockLeft;
         private int clockRight;
-        
-        [Header("当前的形状")]
-        public ShapeInfo tetrisShape;
         
         /// <summary>
         /// 单例模式
@@ -100,17 +97,19 @@ namespace Managers
             {
                 RandomManager.InstantiateOriginShapes();
             }
-            tetrisShape = RandomManager.currentTetrisShape;
 
             // 立即显示形状
-            NodesUtility.RefreshNodeDisplay(tetrisShape.shape, backColor);
             TipsManager.RefreshTipOneDisplay(backColor);
             TipsManager.RefreshTipTwoDisplay(backColor);
+            NodesUtility.RefreshCurrentShapeDisplay(backColor);
             
             // 创建定时器
-            clockDown = ClockUtility.RegisterClock(speedDown, () => MoveUtility.MoveDown(tetrisShape.shape, backColor), -1);
-            clockLeft = ClockUtility.RegisterClock(speedDown, () => MoveUtility.MoveLeft(tetrisShape.shape, backColor), 0);
-            clockRight = ClockUtility.RegisterClock(speedDown, () => MoveUtility.MoveRight(tetrisShape.shape, backColor), 0);
+            clockDown = ClockUtility.RegisterClock(speedDown, -1,
+                () => MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor));
+            clockLeft = ClockUtility.RegisterClock(speedDown, 0,
+                () => MoveUtility.MoveLeft(RandomManager.currentTetrisShape.shape, backColor));
+            clockRight = ClockUtility.RegisterClock(speedDown, 0,
+                () => MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor));
             
             // 初始化时钟
             gameObject.AddComponent<ClockUtility>();
@@ -137,11 +136,11 @@ namespace Managers
         {
             InputUtility.rotate = () =>
             {
-                RotateUtility.Rotate(tetrisShape.shape, backColor);
+                RotateUtility.Rotate(RandomManager.currentTetrisShape.shape, backColor);
             };
             InputUtility.moveLeft = () =>
             {
-                MoveUtility.MoveLeft(tetrisShape.shape, backColor);
+                MoveUtility.MoveLeft(RandomManager.currentTetrisShape.shape, backColor);
                 ClockUtility.GetClock(clockLeft).life = SPEED_LEFT;
                 ClockUtility.GetClock(clockLeft).timed = 0f;
                 ClockUtility.GetClock(clockLeft).count = -1;
@@ -153,7 +152,7 @@ namespace Managers
             };
             InputUtility.moveRight = () =>
             {
-                MoveUtility.MoveRight(tetrisShape.shape, backColor);
+                MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor);
                 ClockUtility.GetClock(clockRight).life = SPEED_RIGHT;
                 ClockUtility.GetClock(clockRight).timed = 0f;
                 ClockUtility.GetClock(clockRight).count = -1;
@@ -165,7 +164,7 @@ namespace Managers
             };
             InputUtility.moveDown = () =>
             {
-                MoveUtility.MoveDown(tetrisShape.shape, backColor);
+                MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor);
                 ClockUtility.GetClock(clockDown).life = speedDown / 4;
                 ClockUtility.GetClock(clockDown).timed = 0;
             };
@@ -210,12 +209,12 @@ namespace Managers
             DataManager.UpdateScoreLevel(reset: true);
             
             // 重置三个形状
-            
+            RandomManager.InstantiateOriginShapes();
             
             // 立即刷新三个形状的显示
             TipsManager.RefreshTipOneDisplay(backColor);
             TipsManager.RefreshTipTwoDisplay(backColor);
-            NodesUtility.RefreshNodeDisplay(tetrisShape.shape, backColor);
+            NodesUtility.RefreshCurrentShapeDisplay(backColor);
         }
     }
 }

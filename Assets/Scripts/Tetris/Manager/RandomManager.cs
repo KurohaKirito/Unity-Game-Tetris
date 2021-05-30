@@ -56,9 +56,9 @@ namespace Tetris.Manager
         /// </summary>
         public static void InstantiateOriginShapes()
         {
-            RandomUtility.RandomShape(forwardColors, out currentTetrisShape);
-            RandomUtility.RandomShape(forwardColors, out TipsManager.tipOne);
-            RandomUtility.RandomShape(forwardColors, out TipsManager.tipTwo);
+            RandomUtility.RandomShape(forwardColors, ref currentTetrisShape);
+            RandomUtility.RandomShape(forwardColors, ref TipsManager.tipOne);
+            RandomUtility.RandomShape(forwardColors, ref TipsManager.tipTwo);
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Tetris.Manager
         {
             currentTetrisShape = TipsManager.tipOne;
             TipsManager.tipOne = TipsManager.tipTwo;
-            RandomUtility.RandomShape(forwardColors, out TipsManager.tipTwo);
+            RandomUtility.RandomShape(forwardColors, ref TipsManager.tipTwo);
         }
 
         /// <summary>

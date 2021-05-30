@@ -155,8 +155,6 @@ namespace Tetris.Utility
         /// <typeparam name="T"></typeparam>
         private static void NodeStacked<T>(T shape, Sprite backColor) where T : Shape.TetrisShape
         {
-            // TODO 堆叠后需要进行的判断操作
-            
             // 1. 清除判定
             ClearUtility.ClearJudge(shape, backColor, ref NodesManager.clearRowIndexList);
             if (NodesManager.clearRowIndexList.Count > 0)
@@ -173,7 +171,6 @@ namespace Tetris.Utility
 
             // 3. 生成下一个结点
             RandomManager.NextShape();
-            GameManager.Instance.tetrisShape = RandomManager.currentTetrisShape;
             
             // 4. 存档
             DataManager.SaveData();
@@ -181,7 +178,7 @@ namespace Tetris.Utility
             // 5. 刷新三个结点的显示
             TipsManager.RefreshTipOneDisplay(backColor);
             TipsManager.RefreshTipTwoDisplay(backColor);
-            NodesUtility.RefreshNodeDisplay(GameManager.Instance.tetrisShape.shape, backColor);
+            NodesUtility.RefreshCurrentShapeDisplay(backColor);
         }
     }
 }

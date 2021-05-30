@@ -12,7 +12,7 @@ namespace Tetris.Utility
         /// <summary>
         /// 随机一个形状并返回
         /// </summary>
-        public static void RandomShape(in List<Sprite> colors, out ShapeInfo shapeInfo)
+        public static void RandomShape(in List<Sprite> colors, ref ShapeInfo shapeInfo)
         {
             var color = RandomColor(colors);
             var type = RandomShapeType<EM_SHAPE_TYPE>();
@@ -28,13 +28,10 @@ namespace Tetris.Utility
                 EM_SHAPE_TYPE.ShapeZ => new TetrisShapeZ(NodesManager.BirthPosition, color),
                 _ => new TetrisShapeI(NodesManager.BirthPosition, color)
             };
-            
-            shapeInfo = new ShapeInfo
-            {
-                shape = tetrisShape,
-                color = color,
-                type = type
-            };
+
+            shapeInfo.shape = tetrisShape;
+            shapeInfo.color = color;
+            shapeInfo.type = type;
         }
 
         /// <summary>

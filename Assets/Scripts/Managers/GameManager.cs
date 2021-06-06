@@ -134,25 +134,40 @@ namespace Managers
         /// </summary>
         private void RegisterInput()
         {
-            InputUtility.rotate = () => { RotateUtility.Rotate(RandomManager.currentTetrisShape.shape, backColor); };
+            InputUtility.rotate = () =>
+            {
+                RotateUtility.Rotate(RandomManager.currentTetrisShape.shape, backColor);
+            };
+            
             InputUtility.moveLeft = () =>
             {
                 MoveUtility.MoveLeft(RandomManager.currentTetrisShape.shape, backColor);
                 ClockUtility.UpdateClock(clockLeft, SPEED_LEFT, 0, -1);
             };
-            InputUtility.cancelMoveLeft = () => { ClockUtility.UpdateClock(clockLeft, 0); };
+            InputUtility.cancelMoveLeft = () =>
+            {
+                ClockUtility.UpdateClock(clockLeft, 0);
+            };
+            
             InputUtility.moveRight = () =>
             {
                 MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor);
                 ClockUtility.UpdateClock(clockRight, SPEED_RIGHT, 0, -1);
             };
-            InputUtility.cancelMoveRight = () => { ClockUtility.UpdateClock(clockRight, 0); };
+            InputUtility.cancelMoveRight = () =>
+            {
+                ClockUtility.UpdateClock(clockRight, 0);
+            };
+            
             InputUtility.moveDown = () =>
             {
                 MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor);
                 ClockUtility.UpdateClock(clockDown, SPEED_DOWN, 0, -1);
             };
-            InputUtility.cancelMoveDown = () => { ClockUtility.UpdateClock(clockDown, DataManager.GetDownSpeed()); };
+            InputUtility.cancelMoveDown = () =>
+            {
+                ClockUtility.UpdateClock(clockDown, DataManager.GetDownSpeed());
+            };
         }
 
         /// <summary>

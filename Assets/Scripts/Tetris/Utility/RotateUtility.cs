@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using Tetris.Manager;
+using Tetris.Shape;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,10 +16,9 @@ namespace Tetris.Utility
         /// 旋转判断
         /// </summary>
         /// <param name="shape">形状变量</param>
-        /// <param name="backColor">背景色</param>
         /// <typeparam name="T">形状的类型</typeparam>
         /// <returns></returns>
-        private static bool RotateJudge<T>(T shape, Sprite backColor) where T : Shape.TetrisShape
+        private static bool RotateJudge<T>(T shape) where T : TetrisShape
         {
             // 先进行预旋转, 返回旋转后的新结点信息
             var newNodes = shape.Rotate(false);
@@ -32,21 +33,27 @@ namespace Tetris.Utility
                 newNodes.Any(node => node.position.x < NodesManager.RowIndex.min) ||
                 newNodes.Any(node => node.position.x > NodesManager.RowIndex.max))
             {
-                Debug.Log($"{typeof(T)} <color='red'>越界</color>, 不允许旋转!");
+                if (GameManager.Instance.isLogEnable)
+                {
+                    Debug.Log($"{typeof(T)} <color='red'>越界</color>, 不允许旋转!");
+                }
+                
                 return false;
             }
 
             // 如果旋转后会和已存在的结点重叠, 则不允许旋转
             for (var i = 0; i < newNodes.Length; i++)
             {
-                var image = NodesManager.GetNodeColor(newNodes[i].position.x, newNodes[i].position.y);
-                
-                if (image.sprite.Equals(backColor))
+                var color = NodesManager.GetNodeColor(newNodes[i].position.x, newNodes[i].position.y).sprite;
+
+                if (RandomManager.IsBackColor(color) || PredictManager.IsPredictColor(color))
                 {
                     continue;
                 }
-
-                Debug.Log($"{typeof(T)} <color='red'>重叠</color>, 不允许旋转!");
+                if (GameManager.Instance.isLogEnable)
+                {
+                    Debug.Log($"{typeof(T)} <color='red'>重叠</color>, 不允许旋转!");
+                }
                 return false;
             }
 
@@ -60,25 +67,21 @@ namespace Tetris.Utility
         /// <param name="shape">形状变量</param>
         /// <param name="backColor">背景颜色</param>
         /// <typeparam name="T">形状类型</typeparam>
-        public static void Rotate<T>(T shape, Sprite backColor) where T : Shape.TetrisShape
+        public static void Rotate<T>(T shape, Sprite backColor) where T : TetrisShape
         {
             // 擦除旧形状
-            foreach (var node in shape.GetNodesInfo())
-            {
-                NodesManager.GetNodeColor(node.position.x, node.position.y).sprite = backColor;
-            }
+            NodesUtility.SetShapeColor(shape, backColor);
 
             // 旋转
-            if (RotateJudge(shape, backColor))
-            {
-                shape.Rotate(true);
-            }
-
+            if (RotateJudge(shape)) { shape.Rotate(true); }
+            
+            // 更新高亮
+            PredictManager.ClearPredictShape(backColor);
+            PredictManager.UpdatePredictShape(backColor, shape.GetNodesInfo());
+            
             // 绘制新形状
-            foreach (var node in shape.GetNodesInfo())
-            {
-                NodesManager.GetNodeColor(node.position.x, node.position.y).sprite = node.color;
-            }
+            var newColor = shape.GetNodesInfo()[0].color;
+            NodesUtility.SetShapeColor(shape, newColor);
         }
     }
 }

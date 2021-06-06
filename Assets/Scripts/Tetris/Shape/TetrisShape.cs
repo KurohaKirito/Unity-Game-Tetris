@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Tetris.Manager;
 using UnityEngine;
 
@@ -18,8 +19,7 @@ namespace Tetris.Shape
         /// <summary>
         /// 颜色
         /// </summary>
-        [NonSerialized]
-        public readonly Sprite color;
+        public Sprite color;
 
         /// <summary>
         /// 构造方法
@@ -225,9 +225,9 @@ namespace Tetris.Shape
         /// <summary>
         /// 按规则旋转非参考点的所有结点
         /// </summary>
-        private static void RotateAllNode(TetrisNodeInfo[] oldNodes, RotateRule rule)
+        private static void RotateAllNode(IList<TetrisNodeInfo> oldNodes, RotateRule rule)
         {
-            for (var i = 1; i < oldNodes.Length; i++)
+            for (var i = 1; i < oldNodes.Count; i++)
             {
                 var offset = oldNodes[i].position - oldNodes[0].position;
 

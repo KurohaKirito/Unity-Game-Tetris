@@ -46,10 +46,9 @@ namespace Tetris.Utility
         /// </summary>
         /// <param name="shape">形状变量</param>
         /// <param name="moveType">移动类型</param>
-        /// <param name="backColor">背景色</param>
         /// <typeparam name="T">形状的类型</typeparam>
         /// <returns></returns>
-        private static bool MoveJudge<T>(T shape, EM_ACTION_TYPE moveType, Sprite backColor) where T : Shape.TetrisShape
+        private static bool MoveJudge<T>(T shape, EM_ACTION_TYPE moveType) where T : Shape.TetrisShape
         {
             // 如果移动后越界, 则不允许移动
             if (shape.GetNodesInfo().Any(node =>
@@ -70,40 +69,21 @@ namespace Tetris.Utility
             // 如果移动后导致重叠, 则不允许移动
             for (var i = 0; i < shape.NodeCount; i++)
             {
-                int nextX;
-                int nextY;
                 var nodeInfo = shape.GetNodesInfo()[i];
 
-                switch (moveType)
+                var nextPosition = moveType switch
                 {
-                    case EM_ACTION_TYPE.Up:
-                        nextX = nodeInfo.position.x + 1;
-                        nextY = nodeInfo.position.y;
-                        break;
-                    case EM_ACTION_TYPE.Down:
-                        nextX = nodeInfo.position.x - 1;
-                        nextY = nodeInfo.position.y;
-                        break;
-                    case EM_ACTION_TYPE.Left:
-                        nextX = nodeInfo.position.x;
-                        nextY = nodeInfo.position.y - 1;
-                        break;
-                    case EM_ACTION_TYPE.Right:
-                        nextX = nodeInfo.position.x;
-                        nextY = nodeInfo.position.y + 1;
-                        break;
-                    default: // Down
-                        nextX = nodeInfo.position.x - 1;
-                        nextY = nodeInfo.position.y;
-                        break;
-                }
+                    EM_ACTION_TYPE.Up => nodeInfo.position + new Vector2Int(1, 0),
+                    EM_ACTION_TYPE.Down => nodeInfo.position + new Vector2Int(-1, 0),
+                    EM_ACTION_TYPE.Left => nodeInfo.position + new Vector2Int(0, -1),
+                    EM_ACTION_TYPE.Right => nodeInfo.position + new Vector2Int(0, 1),
+                    _ => nodeInfo.position + new Vector2Int(1, 0)
+                };
 
-                if (NodesManager.GetNodeColor(nextX, nextY).sprite.Equals(backColor))
+                if (RandomManager.IsNodeColor(NodesManager.GetNodeColor(nextPosition).sprite))
                 {
-                    continue;
+                    return false;
                 }
-                
-                return false;
             }
 
             return true;
@@ -119,30 +99,32 @@ namespace Tetris.Utility
         /// <typeparam name="T">形状类型</typeparam>
         private static void Move<T>(T shape, Sprite backColor, EM_ACTION_TYPE moveType, Action move) where T : Shape.TetrisShape
         {
+            // 取出颜色
+            var color = shape.GetNodesInfo()[0].color;
+            
             // 擦除旧形状
-            foreach (var node in shape.GetNodesInfo())
-            {
-                NodesManager.GetNodeColor(node.position.x, node.position.y).sprite = backColor;
-            }
+            NodesUtility.SetShapeColor(shape, backColor);
 
             // 判断是否可以移动
-            var isCanMove = MoveJudge(shape, moveType, backColor);
+            var isCanMove = MoveJudge(shape, moveType);
             
             // 如果可以移动
             if (isCanMove)
             {
                 move?.Invoke();
+                PredictManager.ClearPredictShape(backColor);
+                PredictManager.UpdatePredictShape(backColor, shape.GetNodesInfo());
             }
             
             // 绘制新形状
-            foreach (var node in shape.GetNodesInfo())
-            {
-                NodesManager.GetNodeColor(node.position.x, node.position.y).sprite = node.color;
-            }
+            NodesUtility.SetShapeColor(shape, color);
 
             // 如果发生了结点堆叠, 则执行以下操作
             if (!isCanMove && moveType == EM_ACTION_TYPE.Down)
             {
+                PredictManager.ClearPredictShape(backColor);
+                NodesUtility.SetShapeColor(shape, color);
+                
                 NodeStacked(shape, backColor);
             }
         }
@@ -155,27 +137,30 @@ namespace Tetris.Utility
         /// <typeparam name="T"></typeparam>
         private static void NodeStacked<T>(T shape, Sprite backColor) where T : Shape.TetrisShape
         {
-            // 1. 清除判定
-            ClearUtility.ClearJudge(shape, backColor, ref NodesManager.clearRowIndexList);
+            // 清除判定
+            ClearUtility.ClearJudge(shape, ref NodesManager.clearRowIndexList);
             if (NodesManager.clearRowIndexList.Count > 0)
             {
                 ClearUtility.ClearRows();
             }
             
-            // 2. Game Over 判断
+            // Game Over 判断
             if (NodesUtility.GameOverJudge(shape))
             {
                 GameManager.Instance.GameOver();
                 return;
             }
 
-            // 3. 生成下一个结点
+            // 生成下一个结点
             RandomManager.NextShape();
             
-            // 4. 存档
+            // 存档
             DataManager.SaveData();
             
-            // 5. 刷新三个结点的显示
+            // 刷新新形状的高亮提示
+            PredictManager.UpdatePredictShape(backColor, RandomManager.currentTetrisShape.shape.GetNodesInfo());
+            
+            // 刷新三个结点的显示
             TipsManager.RefreshTipOneDisplay(backColor);
             TipsManager.RefreshTipTwoDisplay(backColor);
             NodesUtility.RefreshCurrentShapeDisplay(backColor);

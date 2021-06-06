@@ -1,8 +1,6 @@
 ﻿using System;
-using Tetris.Manager;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility;
 
 namespace Managers
 {
@@ -27,6 +25,16 @@ namespace Managers
         /// UI 最高分
         /// </summary>
         public Text highestScore;
+        
+        /// <summary>
+        /// UI 最高分取得日期
+        /// </summary>
+        public Text highestScoreDate;
+        
+        /// <summary>
+        /// UI 最高分取得时间
+        /// </summary>
+        public Text highestScoreTime;
 
         /// <summary>
         /// 单例模式

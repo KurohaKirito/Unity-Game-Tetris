@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Tetris.Utility;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace Tetris.Manager
         public static ShapeInfo currentTetrisShape;
 
         /// <summary>
-        /// 所有的颜色
+        /// 所有的结点颜色
         /// </summary>
         private static List<Sprite> forwardColors;
 
@@ -32,17 +33,16 @@ namespace Tetris.Manager
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="nodeColors">所有的结点颜色</param>
+        /// <param name="nodeColorList">所有的结点颜色</param>
         /// <param name="backNodeColor">背景色</param>
-        public static void Init(List<Sprite> nodeColors, Sprite backNodeColor)
+        public static void Init(List<Sprite> nodeColorList, Sprite backNodeColor)
         {
-            if (nodeColors == null || nodeColors.Count <= 0)
+            if (nodeColorList == null || nodeColorList.Count <= 0)
             {
-                Debug.LogError("随机器初始化失败!");
                 return;
             }
             
-            forwardColors = nodeColors;
+            forwardColors = nodeColorList;
             backColor = backNodeColor;
 
             for (var i = 0; i < forwardColors.Count; i++)
@@ -100,6 +100,26 @@ namespace Tetris.Manager
             }
 
             return backColor;
+        }
+
+        /// <summary>
+        /// 判断颜色是否是结点颜色
+        /// </summary>
+        /// <param name="color">颜色</param>
+        /// <returns></returns>
+        public static bool IsNodeColor(Sprite color)
+        {
+            return Enumerable.Contains(forwardColors, color);
+        }
+
+        /// <summary>
+        /// 判断颜色是否是结点颜色
+        /// </summary>
+        /// <param name="color">颜色</param>
+        /// <returns></returns>
+        public static bool IsBackColor(Sprite color)
+        {
+            return backColor.Equals(color);
         }
     }
 }

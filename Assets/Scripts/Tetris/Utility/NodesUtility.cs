@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Tetris.Manager;
+using Tetris.Shape;
 
 namespace Tetris.Utility
 {
@@ -70,26 +71,15 @@ namespace Tetris.Utility
         public static void RefreshCurrentShapeDisplay(Sprite backColor)
         {
             var shape = RandomManager.currentTetrisShape.shape;
-            
-            // 擦除旧形状
-            foreach (var node in shape.GetNodesInfo())
-            {
-                var image = NodesManager.GetNodeColor(node.position.x, node.position.y);
-                image.sprite = backColor;
-            }
-
-            // 绘制新形状
-            foreach (var node in shape.GetNodesInfo())
-            {
-                var image = NodesManager.GetNodeColor(node.position.x, node.position.y);
-                image.sprite = node.color;
-            }
+            var newColor = shape.GetNodesInfo()[0].color;
+            SetShapeColor(shape, backColor);
+            SetShapeColor(shape, newColor);
         }
 
         /// <summary>
         /// 游戏结束判断
         /// </summary>
-        public static bool GameOverJudge(Shape.TetrisShape tetrisShape)
+        public static bool GameOverJudge(TetrisShape tetrisShape)
         {
             var isGameOver = false;
 
@@ -113,8 +103,9 @@ namespace Tetris.Utility
         /// 重置所有的 Nodes
         /// </summary>
         /// <param name="originColor">初始颜色</param>
-        public static void ResetAreaNodes(Sprite originColor)
+        public static void ResetAllAreaNodes(Sprite originColor)
         {
+            // 玩家区域
             for (var rowIndex = 0; rowIndex < NodesManager.RowCount; rowIndex++)
             {
                 for (var columnIndex = 0; columnIndex < NodesManager.ColumnCount; columnIndex++)
@@ -123,6 +114,7 @@ namespace Tetris.Utility
                 }
             }
 
+            // 提示 One
             for (var rowIndex = 0; rowIndex < TipsManager.RowCount; rowIndex++)
             {
                 for (var columnIndex = 0; columnIndex < TipsManager.ColumnCount; columnIndex++)
@@ -131,12 +123,26 @@ namespace Tetris.Utility
                 }
             }
             
+            // 提示 Two
             for (var rowIndex = 0; rowIndex < TipsManager.RowCount; rowIndex++)
             {
                 for (var columnIndex = 0; columnIndex < TipsManager.ColumnCount; columnIndex++)
                 {
                     TipsManager.GetTipTwoNodeColor(rowIndex, columnIndex).sprite = originColor;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 设置形状颜色
+        /// </summary>
+        /// <param name="shape">形状</param>
+        /// <param name="color">颜色</param>
+        public static void SetShapeColor(TetrisShape shape, Sprite color)
+        {
+            foreach (var node in shape.GetNodesInfo())
+            {
+                NodesManager.GetNodeColor(node.position.x, node.position.y).sprite = color;
             }
         }
     }

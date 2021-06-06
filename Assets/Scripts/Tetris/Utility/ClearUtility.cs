@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Tetris.Manager;
-using UnityEngine;
 
 namespace Tetris.Utility
 {
@@ -10,10 +9,9 @@ namespace Tetris.Utility
         /// 消除判断
         /// </summary>
         /// <param name="shape">当前正在下落的形状</param>
-        /// <param name="backColor">背景色</param>
         /// <param name="clearRows">存储待清除的行索引</param>
         /// <typeparam name="T">当前正在下落的形状的类型</typeparam>
-        public static void ClearJudge<T>(T shape, Sprite backColor, ref List<int> clearRows) where T : Shape.TetrisShape
+        public static void ClearJudge<T>(T shape, ref List<int> clearRows) where T : Shape.TetrisShape
         {
             clearRows ??= new List<int>();
             
@@ -23,7 +21,7 @@ namespace Tetris.Utility
             {
                 var rowIndex = nodeInfos[index].position.x;
                 
-                if (!JudgeOneRowCompleted(rowIndex, backColor))
+                if (!JudgeOneRowCompleted(rowIndex))
                 {
                     continue;
                 }
@@ -42,15 +40,15 @@ namespace Tetris.Utility
         /// 判断特定行是否可以被消除
         /// </summary>
         /// <param name="rowIndex">行索引</param>
-        /// <param name="backColor">背景色</param>
         /// <returns></returns>
-        private static bool JudgeOneRowCompleted(int rowIndex, Sprite backColor)
+        private static bool JudgeOneRowCompleted(int rowIndex)
         {
             var completed = true;
             
             for (var columnIndex = 0; columnIndex < NodesManager.ColumnCount; columnIndex++)
             {
-                if (NodesManager.GetNodeColor(rowIndex, columnIndex).sprite.Equals(backColor))
+                var color = NodesManager.GetNodeColor(rowIndex, columnIndex).sprite;
+                if (RandomManager.IsBackColor(color) || PredictManager.IsPredictColor(color))
                 {
                     completed = false;
                 }
@@ -73,11 +71,24 @@ namespace Tetris.Utility
             for (var index = endIndex; index >= 0; index--)
             {
                 ClearOneRow(NodesManager.clearRowIndexList[index]);
-                
-                // TODO 制定更加详细的加分规则, 当前的太简陋了, 所有一律加 100
-                DataManager.UpdateScoreLevel(100);
             }
-                        
+
+            switch (NodesManager.clearRowIndexList.Count)
+            {
+                case 1:
+                    DataManager.UpdateScoreLevel(10);
+                    break;
+                case 2:
+                    DataManager.UpdateScoreLevel(30);
+                    break;
+                case 3:
+                    DataManager.UpdateScoreLevel(60);
+                    break;
+                case 4:
+                    DataManager.UpdateScoreLevel(100);
+                    break;
+            }
+            
             NodesManager.clearRowIndexList.Clear();
         }
         

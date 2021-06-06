@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Utility
@@ -138,9 +137,86 @@ namespace Utility
         /// </summary>
         /// <param name="tag">标签值</param>
         /// <returns></returns>
-        public static Clock GetClock(int tag)
+        private static Clock GetClock(int tag)
         {
-            return schedules.FirstOrDefault(scheduler => tag == scheduler.tag);
+            foreach (var schedule in schedules)
+            {
+                if (schedule.tag == tag)
+                {
+                    return schedule;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 更新特定定时器的定时长度
+        /// </summary>
+        /// <param name="tag">定时器标签</param>
+        /// <param name="life">新的定时长度</param>
+        /// <param name="timed">已定时时间</param>
+        /// <param name="count">剩余定时次数</param>
+        public static void UpdateClock(int tag, float life, float timed, int count)
+        {
+            var clock = GetClock(tag);
+            if (clock == null)
+            {
+                return;
+            }
+            
+            clock.life = life;
+            clock.timed = timed;
+            clock.count = count;
+        }
+        
+        /// <summary>
+        /// 更新特定定时器的定时长度
+        /// </summary>
+        /// <param name="tag">定时器标签</param>
+        /// <param name="life">新的定时长度</param>
+        /// <param name="count">剩余定时次数</param>
+        public static void UpdateClock(int tag, float life, int count)
+        {
+            var clock = GetClock(tag);
+            if (clock == null)
+            {
+                return;
+            }
+            
+            clock.life = life;
+            clock.count = count;
+        }
+        
+        /// <summary>
+        /// 更新特定定时器的定时长度
+        /// </summary>
+        /// <param name="tag">定时器标签</param>
+        /// <param name="life">新的定时长度</param>
+        public static void UpdateClock(int tag, float life)
+        {
+            var clock = GetClock(tag);
+            if (clock == null)
+            {
+                return;
+            }
+            
+            clock.life = life;
+        }
+
+        /// <summary>
+        /// 更新特定定时器的定时长度
+        /// </summary>
+        /// <param name="tag">定时器标签</param>
+        /// <param name="count">剩余定时次数</param>
+        public static void UpdateClock(int tag, int count)
+        {
+            var clock = GetClock(tag);
+            if (clock == null)
+            {
+                return;
+            }
+            clock.count = count;
         }
 
         /// <summary>

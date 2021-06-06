@@ -69,5 +69,15 @@ namespace Tetris.Manager
         {
             return playerAreaNodes[rowIndex][columnIndex];
         }
+        
+        /// <summary>
+        /// 获取指定坐标结点的颜色
+        /// </summary>
+        /// <param name="position">位置坐标</param>
+        /// <returns></returns>
+        public static Image GetNodeColor(Vector2Int position)
+        {
+            return playerAreaNodes[position.x][position.y];
+        }
     }
 }

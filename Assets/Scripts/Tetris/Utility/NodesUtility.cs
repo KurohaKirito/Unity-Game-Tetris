@@ -79,21 +79,16 @@ namespace Tetris.Utility
         /// <summary>
         /// 游戏结束判断
         /// </summary>
-        public static bool GameOverJudge(TetrisShape tetrisShape)
+        public static bool GameOverJudge(TetrisShape shape)
         {
             var isGameOver = false;
 
-            foreach (var node in tetrisShape.GetNodesInfo())
+            foreach (var node in shape.GetNodesInfo())
             {
                 if (node.position.x > DataManager.DeathLineIndex)
                 {
                     isGameOver = true;
                 }
-            }
-
-            if (isGameOver)
-            {
-                Debug.Log($"游戏结束!");
             }
 
             return isGameOver;

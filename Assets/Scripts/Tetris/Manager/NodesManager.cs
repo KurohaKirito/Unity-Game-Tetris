@@ -42,11 +42,11 @@ namespace Tetris.Manager
         /// 列边界索引
         /// </summary>
         public static Border2 ColumnIndex => new Border2(0, ColumnCount - 1);
-        
+
         /// <summary>
         /// 出生点坐标
         /// </summary>
-        public static Vector2Int BirthPosition => new Vector2Int(RowIndex.max - 1, ColumnCount / 2);
+        public static Vector2Int BirthPosition => new Vector2Int(RowIndex.max - 1, ColumnIndex.max / 2);
 
         /// <summary>
         /// 初始化玩家区域和随机区域

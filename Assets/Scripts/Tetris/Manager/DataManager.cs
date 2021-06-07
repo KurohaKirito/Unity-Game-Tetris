@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Managers;
 using Tetris.Data;
 using Tetris.Shape;
+using Tetris.Utility;
 using UnityEngine;
 using JsonUtility = Utility.JsonUtility;
 
@@ -179,6 +180,7 @@ namespace Tetris.Manager
                 {
                     Debug.Log($"当前没有存档, 初始化游戏!");
                 }
+                
                 UpdateScoreLevel(init: true);
             }
             else if (data.isGameOver)
@@ -187,6 +189,7 @@ namespace Tetris.Manager
                 {
                     Debug.Log($"检测到存档, 但是游戏已经结束, 重置游戏!");
                 }
+                
                 playerData = data;
                 GameManager.Instance.ReStartGame();
             }
@@ -240,22 +243,10 @@ namespace Tetris.Manager
         {
             var color = RandomManager.GetColorByIndex(shape.colorIndex);
             var type = shape.type;
-
-            TetrisShape tetrisShape = type switch
-            {
-                EM_SHAPE_TYPE.ShapeI => new TetrisShapeI(NodesManager.BirthPosition, color),
-                EM_SHAPE_TYPE.ShapeJ => new TetrisShapeJ(NodesManager.BirthPosition, color),
-                EM_SHAPE_TYPE.ShapeL => new TetrisShapeL(NodesManager.BirthPosition, color),
-                EM_SHAPE_TYPE.ShapeO => new TetrisShapeO(NodesManager.BirthPosition, color),
-                EM_SHAPE_TYPE.ShapeS => new TetrisShapeS(NodesManager.BirthPosition, color),
-                EM_SHAPE_TYPE.ShapeT => new TetrisShapeT(NodesManager.BirthPosition, color),
-                EM_SHAPE_TYPE.ShapeZ => new TetrisShapeZ(NodesManager.BirthPosition, color),
-                _ => new TetrisShapeI(NodesManager.BirthPosition, color)
-            };
-
+            
             shapeInfo = new ShapeInfo
             {
-                shape = tetrisShape,
+                shape = RandomUtility.CreateShape(type, color),
                 color = color,
                 type = type
             };
@@ -263,6 +254,7 @@ namespace Tetris.Manager
         
         /// <summary>
         /// 保存存档
+        /// 存档是必须保证 "当前结点" 和 "高亮结点" 没有显示
         /// </summary>
         public static void SaveData()
         {

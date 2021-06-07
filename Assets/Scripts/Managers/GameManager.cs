@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Reflection;
 using Tetris.Manager;
 using Tetris.Utility;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using Utility;
 using JsonUtility = Utility.JsonUtility;
 
@@ -11,8 +10,6 @@ namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        public bool isLogEnable = true;
-
         private const float SPEED_DOWN = 0.04f;
         private const float SPEED_LEFT = 0.15f;
         private const float SPEED_RIGHT = 0.15f;
@@ -21,15 +18,33 @@ namespace Managers
         private int clockLeft;
         private int clockRight;
 
-        [Header("游戏阶段")] public Transform startArea;
+        [Header("日志开关")]
+        public bool isLogEnable;
+
+        [Header("游戏状态")]
+        public bool isPlay;
+
+        [Header("游戏状态")]
+        public Image statusSwitch;
+        public Sprite statusPlay;
+        public Sprite statusPause;
+
+        [Header("游戏阶段")]
+        public Transform startArea;
         public Transform gameArea;
         public Transform overArea;
 
-        [Header("颜色")] public Sprite backColor;
+        [Header("背景色")]
+        public Sprite backColor;
+
+        [Header("结点颜色")]
         public List<Sprite> predictColors;
+
+        [Header("高亮颜色")]
         public List<Sprite> colors;
 
-        [Header("所有行的父结点")] [SerializeField] private Transform randomRowsParent;
+        [Header("所有行的父结点")]
+        [SerializeField] private Transform randomRowsParent;
         [SerializeField] private Transform playerRowsParent;
         [SerializeField] private Transform tipOneRowsParent;
         [SerializeField] private Transform tipTwoRowsParent;
@@ -63,15 +78,10 @@ namespace Managers
         }
 
         /// <summary>
-        /// 开始游戏
+        /// 初始化
         /// </summary>
-        public void StartGame()
+        private void Start()
         {
-            // 开始游戏
-            DataManager.FlagGameOver = false;
-            gameArea.gameObject.SetActive(true);
-            startArea.gameObject.SetActive(false);
-
             // 初始化存档路径以及文件信息
             JsonUtility.Init();
 
@@ -90,15 +100,107 @@ namespace Managers
             // 初始化数据管理器, 用于存档以及读档
             DataManager.Init(playerRowsParent.childCount);
 
+            // 初始化时钟
+            gameObject.AddComponent<ClockUtility>();
+
             // 读取存档, 若存档为空, 则创建初始形状和两个提示的形状
-            var saveData = DataManager.LoadData();
-            if (saveData == null || saveData.isGameOver)
+            var save = DataManager.LoadData();
+            if (save == null || save.isGameOver)
             {
                 RandomManager.InstantiateOriginShapes();
             }
+        }
 
+        /// <summary>
+        /// 帧更新
+        /// </summary>
+        private void Update()
+        {
+            if (isPlay && !DataManager.FlagGameOver)
+            {
+                InputUtility.OnUpdate();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ExitGame();
+            }
+        }
+
+        /// <summary>
+        /// 注册输入事件
+        /// </summary>
+        private void RegisterInput()
+        {
+            InputUtility.rotate = () =>
+            {
+                if (isPlay)
+                {
+                    RotateUtility.Rotate(RandomManager.currentTetrisShape.shape, backColor);
+                }
+            };
+
+            InputUtility.moveLeft = () =>
+            {
+                if (isPlay)
+                {
+                    MoveUtility.MoveLeft(RandomManager.currentTetrisShape.shape, backColor);
+                    ClockUtility.UpdateClock(clockLeft, SPEED_LEFT, 0, -1);
+                }
+            };
+            InputUtility.cancelMoveLeft = () =>
+            {
+                if (isPlay)
+                {
+                    ClockUtility.UpdateClock(clockLeft, 0);
+                }
+            };
+
+            InputUtility.moveRight = () =>
+            {
+                if (isPlay)
+                {
+                    MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor);
+                    ClockUtility.UpdateClock(clockRight, SPEED_RIGHT, 0, -1);
+                }
+            };
+            InputUtility.cancelMoveRight = () =>
+            {
+                if (isPlay)
+                {
+                    ClockUtility.UpdateClock(clockRight, 0);
+                }
+            };
+
+            InputUtility.moveDown = () =>
+            {
+                if (isPlay)
+                {
+                    MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor);
+                    ClockUtility.UpdateClock(clockDown, SPEED_DOWN, 0, -1);
+                }
+            };
+            InputUtility.cancelMoveDown = () =>
+            {
+                if (isPlay)
+                {
+                    ClockUtility.UpdateClock(clockDown, DataManager.GetDownSpeed());
+                }
+            };
+        }
+
+        /// <summary>
+        /// 开始游戏
+        /// </summary>
+        public void StartGame()
+        {
+            // 开始游戏
+            SetPlay();
+            DataManager.FlagGameOver = false;
+            gameArea.gameObject.SetActive(true);
+            startArea.gameObject.SetActive(false);
+            
             // 立即显示高亮提示
-            PredictManager.ClearPredictShape(backColor);
             PredictManager.UpdatePredictShape(backColor, RandomManager.currentTetrisShape.shape.GetNodesInfo());
 
             // 立即显示形状
@@ -114,60 +216,58 @@ namespace Managers
             clockRight = ClockUtility.RegisterClock(SPEED_RIGHT, 0,
                 () => MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor));
 
-            // 初始化时钟
-            gameObject.AddComponent<ClockUtility>();
-
             // 初始化玩家输入响应事件
             RegisterInput();
         }
 
-        private void Update()
+        /// <summary>
+        /// 退出游戏
+        /// </summary>
+        public void ExitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
+        }
+
+        /// <summary>
+        /// 切换游戏状态
+        /// Play Pause
+        /// </summary>
+        public void ChangeGameStatus()
         {
             if (!DataManager.FlagGameOver)
             {
-                InputUtility.OnUpdate();
+                if (Time.timeScale == 0)
+                {
+                    SetPlay();
+                }
+                else
+                {
+                    SetPause();
+                }
             }
         }
 
         /// <summary>
-        /// 注册输入事件
+        /// 暂停
         /// </summary>
-        private void RegisterInput()
+        private void SetPause()
         {
-            InputUtility.rotate = () =>
-            {
-                RotateUtility.Rotate(RandomManager.currentTetrisShape.shape, backColor);
-            };
-            
-            InputUtility.moveLeft = () =>
-            {
-                MoveUtility.MoveLeft(RandomManager.currentTetrisShape.shape, backColor);
-                ClockUtility.UpdateClock(clockLeft, SPEED_LEFT, 0, -1);
-            };
-            InputUtility.cancelMoveLeft = () =>
-            {
-                ClockUtility.UpdateClock(clockLeft, 0);
-            };
-            
-            InputUtility.moveRight = () =>
-            {
-                MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor);
-                ClockUtility.UpdateClock(clockRight, SPEED_RIGHT, 0, -1);
-            };
-            InputUtility.cancelMoveRight = () =>
-            {
-                ClockUtility.UpdateClock(clockRight, 0);
-            };
-            
-            InputUtility.moveDown = () =>
-            {
-                MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor);
-                ClockUtility.UpdateClock(clockDown, SPEED_DOWN, 0, -1);
-            };
-            InputUtility.cancelMoveDown = () =>
-            {
-                ClockUtility.UpdateClock(clockDown, DataManager.GetDownSpeed());
-            };
+            isPlay = false;
+            Time.timeScale = 0;
+            statusSwitch.sprite = statusPlay;
+        }
+
+        /// <summary>
+        /// 继续
+        /// </summary>
+        private void SetPlay()
+        {
+            isPlay = true;
+            Time.timeScale = 1;
+            statusSwitch.sprite = statusPause;
         }
 
         /// <summary>
@@ -176,14 +276,11 @@ namespace Managers
         public void GameOver()
         {
             // 游戏结束
+            SetPause();
             DataManager.FlagGameOver = true;
-            Time.timeScale = 0;
 
             // 展示 Game Over 页面
             overArea.gameObject.SetActive(true);
-
-            // 重置全部结点颜色
-            NodesUtility.ResetAllAreaNodes(backColor);
 
             // 存档
             DataManager.SaveData();
@@ -195,20 +292,22 @@ namespace Managers
         public void ReStartGame()
         {
             // 游戏重开
+            SetPlay();
             DataManager.FlagGameOver = false;
-            Time.timeScale = 1;
 
             // 隐藏 Game Over 界面
             overArea.gameObject.SetActive(false);
 
+            // 重置全部结点颜色
+            NodesUtility.ResetAllAreaNodes(backColor);
+
             // 重置分数, 等级, 速度
             DataManager.UpdateScoreLevel(reset: true);
 
-            // 重置三个形状
+            // 重新生成 3 个形状
             RandomManager.InstantiateOriginShapes();
 
             // 立即显示高亮
-            PredictManager.ClearPredictShape(backColor);
             PredictManager.UpdatePredictShape(backColor, RandomManager.currentTetrisShape.shape.GetNodesInfo());
 
             // 立即刷新三个形状的显示
@@ -223,17 +322,6 @@ namespace Managers
         public void UpdateDownSpeed(float speed)
         {
             ClockUtility.UpdateClock(clockDown, Input.GetKey(KeyCode.S) ? SPEED_DOWN : speed);
-        }
-
-        /// <summary>
-        /// 清空控制台
-        /// </summary>
-        public static void ClearConsole()
-        {
-            var assembly = Assembly.GetAssembly(typeof(SceneView));
-            var logEntries = assembly.GetType("UnityEditor.LogEntries");
-            var clearConsoleMethod = logEntries.GetMethod("Clear");
-            clearConsoleMethod?.Invoke(new object(), null);
         }
     }
 }

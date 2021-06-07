@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -57,6 +58,20 @@ namespace Utility
         /// 初始化
         /// </summary>
         public static void Init()
+        {
+            InitAndroid();
+            InitWindows();
+        }
+
+        [Conditional("UNITY_ANDROID")]
+        private static void InitAndroid()
+        {
+            SaveFilePath= Application.persistentDataPath + "/Saves/";
+            SaveFilePathName = SaveFilePath + "Save.json";
+        }
+        
+        [Conditional("UNITY_EDITOR")]
+        private static void InitWindows()
         {
             SaveFilePath= Application.dataPath + "/Saves/";
             SaveFilePathName = SaveFilePath + "Save.json";

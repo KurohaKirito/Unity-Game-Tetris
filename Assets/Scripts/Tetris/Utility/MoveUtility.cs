@@ -157,7 +157,7 @@ namespace Tetris.Utility
             // 存档
             DataManager.SaveData();
             
-            // 刷新新形状的高亮提示
+            // 刷新高亮提示
             PredictManager.UpdatePredictShape(backColor, RandomManager.currentTetrisShape.shape.GetNodesInfo());
             
             // 刷新三个结点的显示

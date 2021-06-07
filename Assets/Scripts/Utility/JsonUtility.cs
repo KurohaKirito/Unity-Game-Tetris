@@ -61,6 +61,7 @@ namespace Utility
         {
             InitAndroid();
             InitWindows();
+            InitEditor();
         }
 
         [Conditional("UNITY_ANDROID")]
@@ -70,8 +71,15 @@ namespace Utility
             SaveFilePathName = SaveFilePath + "Save.json";
         }
         
-        [Conditional("UNITY_EDITOR")]
+        [Conditional("UNITY_STANDALONE_WIN")]
         private static void InitWindows()
+        {
+            SaveFilePath= Application.dataPath + "/Saves/";
+            SaveFilePathName = SaveFilePath + "Save.json";
+        }
+        
+        [Conditional("UNITY_EDITOR")]
+        private static void InitEditor()
         {
             SaveFilePath= Application.dataPath + "/Saves/";
             SaveFilePathName = SaveFilePath + "Save.json";

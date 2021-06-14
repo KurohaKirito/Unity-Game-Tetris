@@ -44,10 +44,17 @@ namespace Managers
         public List<Sprite> colors;
 
         [Header("所有行的父结点")]
-        [SerializeField] private Transform randomRowsParent;
-        [SerializeField] private Transform playerRowsParent;
-        [SerializeField] private Transform tipOneRowsParent;
-        [SerializeField] private Transform tipTwoRowsParent;
+        [SerializeField]
+        private Transform randomRowsParent;
+        [SerializeField]
+        private Transform playerRowsParent;
+        [SerializeField]
+        private Transform tipOneRowsParent;
+        [SerializeField]
+        private Transform tipTwoRowsParent;
+        
+        private static Color ColorPause => new Color(246 / 255f, 93 / 255f, 59 / 255f);
+        private static Color ColorPlay => new Color(40 / 255f, 164 / 255f, 44 / 255f);
 
         /// <summary>
         /// 单例模式
@@ -258,6 +265,17 @@ namespace Managers
             isPlay = false;
             Time.timeScale = 0;
             statusSwitch.sprite = statusPlay;
+            var colorBlock = statusSwitch.GetComponent<UnityEngine.UI.Button>().colors;
+            statusSwitch.GetComponent<UnityEngine.UI.Button>().colors = new ColorBlock
+            {
+                normalColor = ColorPlay,
+                highlightedColor = colorBlock.highlightedColor,
+                pressedColor = colorBlock.pressedColor,
+                selectedColor = colorBlock.selectedColor,
+                disabledColor = colorBlock.disabledColor,
+                colorMultiplier = colorBlock.colorMultiplier,
+                fadeDuration = colorBlock.fadeDuration
+            };
         }
 
         /// <summary>
@@ -268,6 +286,17 @@ namespace Managers
             isPlay = true;
             Time.timeScale = 1;
             statusSwitch.sprite = statusPause;
+            var colorBlock = statusSwitch.GetComponent<UnityEngine.UI.Button>().colors;
+            statusSwitch.GetComponent<UnityEngine.UI.Button>().colors = new ColorBlock
+            {
+                normalColor = ColorPause,
+                highlightedColor = colorBlock.highlightedColor,
+                pressedColor = colorBlock.pressedColor,
+                selectedColor = colorBlock.selectedColor,
+                disabledColor = colorBlock.disabledColor,
+                colorMultiplier = colorBlock.colorMultiplier,
+                fadeDuration = colorBlock.fadeDuration
+            };
         }
 
         /// <summary>

@@ -4,7 +4,6 @@ using Tetris.Utility;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
-using JsonUtility = Utility.JsonUtility;
 
 namespace Managers
 {
@@ -90,7 +89,7 @@ namespace Managers
         private void Start()
         {
             // 初始化存档路径以及文件信息
-            JsonUtility.Init();
+            Utility.JsonUtility.Init();
 
             // 初始化预判高亮器所需要的全部颜色
             PredictManager.Init(predictColors);
@@ -262,9 +261,12 @@ namespace Managers
         /// </summary>
         private void SetPause()
         {
+            // 暂停游戏
             isPlay = false;
             Time.timeScale = 0;
             statusSwitch.sprite = statusPlay;
+
+            // 修改按钮外观设置
             var colorBlock = statusSwitch.GetComponent<UnityEngine.UI.Button>().colors;
             statusSwitch.GetComponent<UnityEngine.UI.Button>().colors = new ColorBlock
             {
@@ -283,9 +285,15 @@ namespace Managers
         /// </summary>
         private void SetPlay()
         {
+            // 恢复游戏状态
             isPlay = true;
             Time.timeScale = 1;
             statusSwitch.sprite = statusPause;
+            
+            // 更新按键状态
+            InputUtility.UpdateKeyBoard();
+            
+            // 更新按钮外观设置
             var colorBlock = statusSwitch.GetComponent<UnityEngine.UI.Button>().colors;
             statusSwitch.GetComponent<UnityEngine.UI.Button>().colors = new ColorBlock
             {

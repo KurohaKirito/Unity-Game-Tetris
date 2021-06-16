@@ -428,5 +428,24 @@ namespace Tetris.Manager
 
             return speed;
         }
+
+        /// <summary>
+        /// 计算得出当前消除操作得到的分数
+        /// </summary>
+        /// <param name="rowNumber">消除的行数</param>
+        /// <returns>获得的分数</returns>
+        public static int GetScoreOnClear(int rowNumber)
+        {
+            var baseScore = rowNumber switch
+            {
+                1 => 10,
+                2 => 30,
+                3 => 60,
+                4 => 100,
+                _ => 10
+            };
+            
+            return baseScore + PlayerLevel * rowNumber;
+        }
     }
 }

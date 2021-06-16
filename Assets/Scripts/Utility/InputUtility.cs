@@ -13,6 +13,9 @@ namespace Utility
         public static Action moveRight;
         public static Action cancelMoveRight;
 
+        /// <summary>
+        /// 帧更新事件
+        /// </summary>
         public static void OnUpdate()
         {
             KeyBoardCheck();
@@ -61,6 +64,42 @@ namespace Utility
 
             // 取消加速
             if (Input.GetKeyUp(KeyCode.S))
+            {
+                cancelMoveDown?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// 重置键盘按键
+        /// </summary>
+        public static void UpdateKeyBoard()
+        {
+            // 左移
+            if (Input.GetKey(KeyCode.A))
+            {
+                moveLeft?.Invoke();
+            }
+            else
+            {
+                cancelMoveLeft?.Invoke();
+            }
+
+            // 右移
+            if (Input.GetKey(KeyCode.D))
+            {
+                moveRight?.Invoke();
+            }
+            else
+            {
+                cancelMoveRight?.Invoke();
+            }
+
+            // 加速
+            if (Input.GetKey(KeyCode.S))
+            {
+                moveDown?.Invoke();
+            }
+            else
             {
                 cancelMoveDown?.Invoke();
             }

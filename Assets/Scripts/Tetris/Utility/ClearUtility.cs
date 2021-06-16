@@ -72,23 +72,8 @@ namespace Tetris.Utility
             {
                 ClearOneRow(NodesManager.clearRowIndexList[index]);
             }
-
-            switch (NodesManager.clearRowIndexList.Count)
-            {
-                case 1:
-                    DataManager.UpdateScoreLevel(10);
-                    break;
-                case 2:
-                    DataManager.UpdateScoreLevel(30);
-                    break;
-                case 3:
-                    DataManager.UpdateScoreLevel(60);
-                    break;
-                case 4:
-                    DataManager.UpdateScoreLevel(100);
-                    break;
-            }
             
+            DataManager.UpdateScoreLevel(DataManager.GetScoreOnClear(NodesManager.clearRowIndexList.Count));
             NodesManager.clearRowIndexList.Clear();
         }
         

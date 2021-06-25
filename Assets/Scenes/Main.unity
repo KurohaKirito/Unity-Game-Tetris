@@ -4463,11 +4463,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLogEnable: 0
-  isPlay: 0
-  vibrantEnable: 0
+  isPlay: 1
+  vibrantEnable: 1
   statusSwitch: {fileID: 1518285958}
-  statusPlay: {fileID: 21300000, guid: af6891b83301d9948815bf7b132bd247, type: 3}
-  statusPause: {fileID: 21300000, guid: 6ebf1332bd73e054ea501c3ca6418b37, type: 3}
+  statusSpritePlay: {fileID: 21300000, guid: af6891b83301d9948815bf7b132bd247, type: 3}
+  statusSpritePause: {fileID: 21300000, guid: 6ebf1332bd73e054ea501c3ca6418b37, type: 3}
   startArea: {fileID: 1055649306}
   gameArea: {fileID: 1110623902}
   overArea: {fileID: 1326382725}

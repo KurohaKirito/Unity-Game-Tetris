@@ -3,6 +3,7 @@ using System.Linq;
 using Managers;
 using Tetris.Manager;
 using UnityEngine;
+using Utility;
 
 namespace Tetris.Utility
 {
@@ -141,6 +142,13 @@ namespace Tetris.Utility
             ClearUtility.ClearJudge(shape, ref NodesManager.clearRowIndexList);
             if (NodesManager.clearRowIndexList.Count > 0)
             {
+                // 震动
+                if (GameManager.Instance.vibrantEnable)
+                {
+                    AndroidUtility.Vibrant();
+                }
+
+                // 清除
                 ClearUtility.ClearRows();
             }
             

@@ -1,28 +1,28 @@
 fileFormatVersion: 2
-guid: 6d4b2b213cf47974a9d73e971c082ba1
+guid: 01ec42aaf6f052e45bb3b58b1c54aef3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7086606104257924489
-    second: "\u84DD\u8272"
-  - first:
-      213: -8166966530815011495
-    second: "\u6A59\u8272"
-  - first:
-      213: -488248382649040768
-    second: "\u9EC4\u8272"
-  - first:
-      213: 24668264497549948
+      213: -2993085149067396588
     second: "\u9752\u8272"
   - first:
-      213: 5518198501377991442
+      213: 2549906123928990055
+    second: "\u84DD\u8272"
+  - first:
+      213: -3141677941003095230
+    second: "\u9EC4\u8272"
+  - first:
+      213: 1800882771638606275
+    second: "\u7EFF\u8272"
+  - first:
+      213: 8230382852614854717
+    second: "\u6A59\u8272"
+  - first:
+      213: 7932081819851562516
     second: "\u7D2B\u8272"
   - first:
-      213: -6213144684369410280
+      213: -3758258339846406424
     second: "\u7EA2\u8272"
-  - first:
-      213: -6448440698581955843
-    second: "\u7EFF\u8272"
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -108,15 +108,27 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\u84DD\u8272"
+      name: "\u9752\u8272"
       rect:
         serializedVersion: 2
-        x: 500
-        y: 400
+        x: 0
+        y: 200
         width: 100
         height: 100
       alignment: 0
@@ -126,18 +138,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98d886394bea85260800000000000000
-      internalID: 7086606104257924489
+      spriteID: 41a375b3aec6676d0800000000000000
+      internalID: -2993085149067396588
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u6A59\u8272"
+      name: "\u84DD\u8272"
       rect:
         serializedVersion: 2
-        x: 1101
-        y: 400
+        x: 200
+        y: 200
         width: 100
         height: 100
       alignment: 0
@@ -147,8 +159,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 955544ee53b19ae80800000000000000
-      internalID: -8166966530815011495
+      spriteID: 76171671c16136320800000000000000
+      internalID: 2549906123928990055
       vertices: []
       indices: 
       edges: []
@@ -157,8 +169,8 @@ TextureImporter:
       name: "\u9EC4\u8272"
       rect:
         serializedVersion: 2
-        x: 1300
-        y: 400
+        x: 400
+        y: 200
         width: 100
         height: 100
       alignment: 0
@@ -168,18 +180,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0808b0ecea46939f0800000000000000
-      internalID: -488248382649040768
+      spriteID: 24374d7de848664d0800000000000000
+      internalID: -3141677941003095230
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u9752\u8272"
+      name: "\u7EFF\u8272"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 300
+        x: 100
+        y: 100
         width: 100
         height: 100
       alignment: 0
@@ -189,8 +201,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c721a96e7a3a75000800000000000000
-      internalID: 24668264497549948
+      spriteID: 3c9d3add6550ef810800000000000000
+      internalID: 1800882771638606275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u6A59\u8272"
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3813971991383270800000000000000
+      internalID: 8230382852614854717
       vertices: []
       indices: 
       edges: []
@@ -199,8 +232,8 @@ TextureImporter:
       name: "\u7D2B\u8272"
       rect:
         serializedVersion: 2
-        x: 700
-        y: 100
+        x: 0
+        y: 0
         width: 100
         height: 100
       alignment: 0
@@ -210,35 +243,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2136ab2ec44949c40800000000000000
-      internalID: 5518198501377991442
+      spriteID: 41e1691a36a641e60800000000000000
+      internalID: 7932081819851562516
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
       name: "\u7EA2\u8272"
-      rect:
-        serializedVersion: 2
-        x: 1000
-        y: 100
-        width: 100
-        height: 100
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8170e0604d976c9a0800000000000000
-      internalID: -6213144684369410280
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "\u7EFF\u8272"
       rect:
         serializedVersion: 2
         x: 200
@@ -252,8 +264,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dfac9d599598286a0800000000000000
-      internalID: -6448440698581955843
+      spriteID: 8ee3e47b3fbf7dbc0800000000000000
+      internalID: -3758258339846406424
       vertices: []
       indices: 
       edges: []
@@ -270,7 +282,7 @@ TextureImporter:
     secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
+  pSDShowRemoveMatteOption: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 

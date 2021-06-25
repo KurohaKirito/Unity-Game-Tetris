@@ -20,13 +20,16 @@ namespace Managers
         [Header("日志开关")]
         public bool isLogEnable;
 
-        [Header("游戏状态")]
+        [Header("运行状态")]
         public bool isPlay;
+        
+        [Header("震感反馈")]
+        public bool vibrantEnable;
 
         [Header("游戏状态")]
         public Image statusSwitch;
-        public Sprite statusPlay;
-        public Sprite statusPause;
+        public Sprite statusSpritePlay;
+        public Sprite statusSpritePause;
 
         [Header("游戏阶段")]
         public Transform startArea;
@@ -35,12 +38,12 @@ namespace Managers
 
         [Header("背景色")]
         public Sprite backColor;
-
+        
         [Header("结点颜色")]
-        public List<Sprite> predictColors;
+        public List<Sprite> nodeColors;
 
         [Header("高亮颜色")]
-        public List<Sprite> colors;
+        public List<Sprite> predictColors;
 
         [Header("所有行的父结点")]
         [SerializeField]
@@ -95,7 +98,7 @@ namespace Managers
             PredictManager.Init(predictColors);
 
             // 初始化随机器所需要的全部颜色
-            RandomManager.Init(colors, backColor);
+            RandomManager.Init(nodeColors, backColor);
 
             // 初始化结点管理器, 将所有玩家区域的 Transform 读入内存, 并初始化所有结点为背景色
             NodesManager.Init(backColor, playerRowsParent, randomRowsParent);
@@ -264,7 +267,7 @@ namespace Managers
             // 暂停游戏
             isPlay = false;
             Time.timeScale = 0;
-            statusSwitch.sprite = statusPlay;
+            statusSwitch.sprite = statusSpritePlay;
 
             // 修改按钮外观设置
             var colorBlock = statusSwitch.GetComponent<UnityEngine.UI.Button>().colors;
@@ -288,7 +291,7 @@ namespace Managers
             // 恢复游戏状态
             isPlay = true;
             Time.timeScale = 1;
-            statusSwitch.sprite = statusPause;
+            statusSwitch.sprite = statusSpritePause;
             
             // 更新按键状态
             InputUtility.UpdateKeyBoard();

@@ -110,7 +110,7 @@ namespace Utility
             var jsonString = File.ReadAllText(SaveFilePathName);
             
             using var stringReader = new StringReader(jsonString);
-            using var jsonTextReader =  new JsonTextReader(stringReader);
+            using var jsonTextReader = new JsonTextReader(stringReader);
             
             var result = serializer.Deserialize(jsonTextReader, typeof(T)) as T;
             return result;

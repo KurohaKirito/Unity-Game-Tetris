@@ -245,7 +245,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 2
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: G:/WorkSpace/Unity/My Key Store/Tetris.keystore
+  AndroidKeystoreName: G:/Google/Google/WorkSpace/Unity/Key Store/Tetris.keystore
   AndroidKeyaliasName: tetris
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0

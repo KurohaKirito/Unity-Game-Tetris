@@ -145,7 +145,7 @@ namespace Tetris.Utility
                 // 震动
                 if (GameManager.Instance.vibrantEnable)
                 {
-                    AndroidUtility.Vibrant();
+                    VibrateManager.Instance.TriggerSuccess();
                 }
 
                 // 清除

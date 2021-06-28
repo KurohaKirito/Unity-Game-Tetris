@@ -124,7 +124,7 @@ namespace Tetris.Manager
         /// </summary>
         public static void ClearPredictShape(Sprite backColor)
         {
-            if (predictShape != null)
+            if (!object.ReferenceEquals(predictShape, null))
             {
                 for (var index = 0; index < predictShape.Count; index++)
                 {

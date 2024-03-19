@@ -26,8 +26,8 @@ namespace MoreMountains.NiceVibrations
 
         public MMNVEnumConditionAttribute(string conditionBoolean, params int[] enumValues)
         {
-            this.ConditionEnum = conditionBoolean;
-            this.Hidden = true;
+            ConditionEnum = conditionBoolean;
+            Hidden = true;
 
             for (int i = 0; i < enumValues.Length; i++)
             {
@@ -92,4 +92,3 @@ namespace MoreMountains.NiceVibrations
     }
 #endif
 }
-

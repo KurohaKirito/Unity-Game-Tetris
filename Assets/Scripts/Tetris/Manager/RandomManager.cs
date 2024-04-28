@@ -78,13 +78,8 @@ namespace Tetris.Manager
         /// <returns></returns>
         public static int GetColorIndexByName(string colorName)
         {
-            if (colorDictionary.ContainsKey(colorName))
-            {
-                return colorDictionary[colorName];
-            }
-
             // 背景返回 -1
-            return -1;
+            return colorDictionary.GetValueOrDefault(colorName, -1);
         }
 
         /// <summary>

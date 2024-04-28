@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using Tetris.Manager;
 using Tetris.Utility;
 using UnityEngine;
@@ -79,6 +80,9 @@ namespace Managers
 
         private void Start()
         {
+            // 初始化 DoTween
+            DOTween.Init();
+
             // 初始化存档路径以及文件信息
             Utility.JsonUtility.Init();
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using DG.Tweening;
 using Managers;
 using Tetris.Manager;
 using UnityEngine;
-using Utility;
 
 namespace Tetris.Utility
 {
@@ -125,6 +125,15 @@ namespace Tetris.Utility
             {
                 PredictManager.ClearPredictShape(backColor);
                 NodesUtility.SetShapeColor(shape, color);
+
+                foreach (var nodeInfo in shape.GetNodesInfo())
+                {
+                    var image = NodesManager.GetNodeColor(nodeInfo.position);
+                    image.transform.DOScale(new Vector3(0.6f, 0.6f, 1), 0.1f).onComplete = () =>
+                    {
+                        image.transform.DOScale(Vector3.one, 0.1f);
+                    };
+                }
 
                 NodeStacked(shape, backColor);
             }

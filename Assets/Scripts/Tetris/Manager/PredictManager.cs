@@ -84,9 +84,9 @@ namespace Tetris.Manager
             {
                 for (var index = 0; index < predictShape.Count; index++)
                 {
-                    nodeEnable[index] = NodesManager.GetNodeColor(
-                        currentShapeNodesInfo[index].position.x - offset,
-                        currentShapeNodesInfo[index].position.y).sprite == backColor;
+                    var rowIndex = currentShapeNodesInfo[index].position.x - offset;
+                    var columnIndex = currentShapeNodesInfo[index].position.y;
+                    nodeEnable[index] = NodesManager.GetNodeColor(rowIndex, columnIndex).sprite == backColor;
                 }
 
                 if (nodeEnable.Exists(enable => enable == false))
@@ -100,9 +100,7 @@ namespace Tetris.Manager
                 {
                     predictShape[index] = new TetrisNodeInfo
                     {
-                        position = new Vector2Int(
-                            currentShapeNodesInfo[index].position.x - offset,
-                            currentShapeNodesInfo[index].position.y),
+                        position = new Vector2Int(currentShapeNodesInfo[index].position.x - offset, currentShapeNodesInfo[index].position.y),
                         color = predictColors[colorIndex]
                     };
                 }
@@ -113,8 +111,7 @@ namespace Tetris.Manager
             {
                 for (var index = 0; index < predictShape.Count; index++)
                 {
-                    NodesManager.GetNodeColor(predictShape[index].position.x, predictShape[index].position.y).sprite =
-                        predictColors[colorIndex];
+                    NodesManager.GetNodeColor(predictShape[index].position.x, predictShape[index].position.y).sprite = predictColors[colorIndex];
                 }
             }
         }
@@ -128,8 +125,7 @@ namespace Tetris.Manager
             {
                 for (var index = 0; index < predictShape.Count; index++)
                 {
-                    NodesManager.GetNodeColor(predictShape[index].position.x,
-                                              predictShape[index].position.y).sprite = backColor;
+                    NodesManager.GetNodeColor(predictShape[index].position.x, predictShape[index].position.y).sprite = backColor;
                 }
             }
         }

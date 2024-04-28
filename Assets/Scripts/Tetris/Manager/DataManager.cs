@@ -178,7 +178,7 @@ namespace Tetris.Manager
             {
                 if (GameManager.Instance.isLogEnable)
                 {
-                    Debug.Log($"当前没有存档, 初始化游戏!");
+                    Debug.Log("当前没有存档, 初始化游戏!");
                 }
 
                 UpdateScoreLevel(init: true);
@@ -187,7 +187,7 @@ namespace Tetris.Manager
             {
                 if (GameManager.Instance.isLogEnable)
                 {
-                    Debug.Log($"检测到存档, 但是游戏已经结束, 重置游戏!");
+                    Debug.Log("检测到存档, 但是游戏已经结束, 重置游戏!");
                 }
 
                 playerData = data;
@@ -197,7 +197,7 @@ namespace Tetris.Manager
             {
                 if (GameManager.Instance.isLogEnable)
                 {
-                    Debug.Log($"检测到存档, 恢复存档数据!");
+                    Debug.Log("检测到存档, 恢复存档数据!");
                 }
 
                 playerData = data;

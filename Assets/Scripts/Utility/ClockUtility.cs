@@ -231,7 +231,7 @@ namespace Utility
                 return;
             }
 
-            schedules[index] = schedules[schedules.Count - 1];
+            schedules[index] = schedules[^1];
             schedules.RemoveAt(schedules.Count - 1);
         }
 

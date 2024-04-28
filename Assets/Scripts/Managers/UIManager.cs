@@ -10,7 +10,7 @@ namespace Managers
         /// UI 时间
         /// </summary>
         public Text time;
-        
+
         /// <summary>
         /// UI 等级
         /// </summary>
@@ -20,17 +20,17 @@ namespace Managers
         /// UI 当前分数
         /// </summary>
         public Text score;
-        
+
         /// <summary>
         /// UI 最高分
         /// </summary>
         public Text highestScore;
-        
+
         /// <summary>
         /// UI 最高分取得日期
         /// </summary>
         public Text highestScoreDate;
-        
+
         /// <summary>
         /// UI 最高分取得时间
         /// </summary>
@@ -40,7 +40,7 @@ namespace Managers
         /// 单例模式
         /// </summary>
         private static UIManager instance;
-        
+
         /// <summary>
         /// 单例模式
         /// </summary>

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.UI;
-
 using Tetris.Utility;
 
 namespace Tetris.Manager
 {
     using TetrisRow = List<Image>;
-    
+
     public static class TipsManager
     {
         /// <summary>
@@ -21,22 +19,22 @@ namespace Tetris.Manager
         /// 提示形状 Two
         /// </summary>
         private static List<TetrisRow> tipTwoNodes;
-        
+
         /// <summary>
         /// 提示区域的行数
         /// </summary>
         public static int RowCount => tipOneNodes.Count;
-        
+
         /// <summary>
         /// 提示区域的列数
         /// </summary>
         public static int ColumnCount => tipOneNodes[0].Count;
-        
+
         /// <summary>
         /// 提示 One
         /// </summary>
         public static ShapeInfo tipOne;
-        
+
         /// <summary>
         /// 提示 Two
         /// </summary>
@@ -58,7 +56,7 @@ namespace Tetris.Manager
         {
             RefreshTip(backColor, tipOneNodes, tipOne);
         }
-        
+
         /// <summary>
         /// 刷新显示提示 Two
         /// </summary>
@@ -133,7 +131,7 @@ namespace Tetris.Manager
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
         /// <summary>
         /// 获取提示 One 结点的颜色
         /// </summary>
@@ -144,7 +142,7 @@ namespace Tetris.Manager
         {
             return tipOneNodes[rowIndex][columnIndex];
         }
-        
+
         /// <summary>
         /// 获取提示 Two 结点的颜色
         /// </summary>

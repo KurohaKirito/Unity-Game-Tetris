@@ -75,7 +75,7 @@ namespace Tetris.Manager
                     lowNode = nodeInfo;
                 }
             }
-            
+
             // 定义是否要显示高亮, 默认不显示
             var displayPredictShape = false;
 
@@ -124,12 +124,12 @@ namespace Tetris.Manager
         /// </summary>
         public static void ClearPredictShape(Sprite backColor)
         {
-            if (!object.ReferenceEquals(predictShape, null))
+            if (object.ReferenceEquals(predictShape, null) == false)
             {
                 for (var index = 0; index < predictShape.Count; index++)
                 {
                     NodesManager.GetNodeColor(predictShape[index].position.x,
-                        predictShape[index].position.y).sprite = backColor;
+                                              predictShape[index].position.y).sprite = backColor;
                 }
             }
         }

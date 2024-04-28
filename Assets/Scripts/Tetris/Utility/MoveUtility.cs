@@ -41,7 +41,7 @@ namespace Tetris.Utility
         {
             Move(shape, backColor, EM_ACTION_TYPE.Right, shape.MoveRight);
         }
-        
+
         /// <summary>
         /// 移动判断
         /// </summary>
@@ -53,16 +53,16 @@ namespace Tetris.Utility
         {
             // 如果移动后越界, 则不允许移动
             if (shape.GetNodesInfo().Any(node =>
-            {
-                return moveType switch
                 {
-                    EM_ACTION_TYPE.Up => false,
-                    EM_ACTION_TYPE.Down => node.position.x <= NodesManager.RowIndex.min,
-                    EM_ACTION_TYPE.Left => node.position.y <= NodesManager.ColumnIndex.min,
-                    EM_ACTION_TYPE.Right => node.position.y >= NodesManager.ColumnIndex.max,
-                    _ => false
-                };
-            }))
+                    return moveType switch
+                    {
+                        EM_ACTION_TYPE.Up => false,
+                        EM_ACTION_TYPE.Down => node.position.x <= NodesManager.RowIndex.min,
+                        EM_ACTION_TYPE.Left => node.position.y <= NodesManager.ColumnIndex.min,
+                        EM_ACTION_TYPE.Right => node.position.y >= NodesManager.ColumnIndex.max,
+                        _ => false
+                    };
+                }))
             {
                 return false;
             }
@@ -89,7 +89,7 @@ namespace Tetris.Utility
 
             return true;
         }
-        
+
         /// <summary>
         /// 移动特定形状
         /// </summary>
@@ -102,13 +102,13 @@ namespace Tetris.Utility
         {
             // 取出颜色
             var color = shape.GetNodesInfo()[0].color;
-            
+
             // 擦除旧形状
             NodesUtility.SetShapeColor(shape, backColor);
 
             // 判断是否可以移动
             var isCanMove = MoveJudge(shape, moveType);
-            
+
             // 如果可以移动
             if (isCanMove)
             {
@@ -116,20 +116,20 @@ namespace Tetris.Utility
                 PredictManager.ClearPredictShape(backColor);
                 PredictManager.UpdatePredictShape(backColor, shape.GetNodesInfo());
             }
-            
+
             // 绘制新形状
             NodesUtility.SetShapeColor(shape, color);
 
             // 如果发生了结点堆叠, 则执行以下操作
-            if (!isCanMove && moveType == EM_ACTION_TYPE.Down)
+            if (isCanMove == false && moveType == EM_ACTION_TYPE.Down)
             {
                 PredictManager.ClearPredictShape(backColor);
                 NodesUtility.SetShapeColor(shape, color);
-                
+
                 NodeStacked(shape, backColor);
             }
         }
-        
+
         /// <summary>
         /// 堆叠后需要进行的判断操作
         /// </summary>
@@ -151,7 +151,7 @@ namespace Tetris.Utility
                 // 清除
                 ClearUtility.ClearRows();
             }
-            
+
             // Game Over 判断
             if (NodesUtility.GameOverJudge(shape))
             {
@@ -161,13 +161,13 @@ namespace Tetris.Utility
 
             // 生成下一个结点
             RandomManager.NextShape();
-            
+
             // 存档
             DataManager.SaveData();
-            
+
             // 刷新高亮提示
             PredictManager.UpdatePredictShape(backColor, RandomManager.currentTetrisShape.shape.GetNodesInfo());
-            
+
             // 刷新三个结点的显示
             TipsManager.RefreshTipOneDisplay(backColor);
             TipsManager.RefreshTipTwoDisplay(backColor);

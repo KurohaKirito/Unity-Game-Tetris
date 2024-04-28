@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace Tetris.Utility
 {
     using TetrisRow = List<Image>;
-    
+
     public static class RotateUtility
     {
         /// <summary>
@@ -37,7 +37,7 @@ namespace Tetris.Utility
                 {
                     Debug.Log($"{typeof(T)} <color='red'>越界</color>, 不允许旋转!");
                 }
-                
+
                 return false;
             }
 
@@ -50,10 +50,12 @@ namespace Tetris.Utility
                 {
                     continue;
                 }
+
                 if (GameManager.Instance.isLogEnable)
                 {
                     Debug.Log($"{typeof(T)} <color='red'>重叠</color>, 不允许旋转!");
                 }
+
                 return false;
             }
 
@@ -73,12 +75,15 @@ namespace Tetris.Utility
             NodesUtility.SetShapeColor(shape, backColor);
 
             // 旋转
-            if (RotateJudge(shape)) { shape.Rotate(true); }
-            
+            if (RotateJudge(shape))
+            {
+                shape.Rotate(true);
+            }
+
             // 更新高亮
             PredictManager.ClearPredictShape(backColor);
             PredictManager.UpdatePredictShape(backColor, shape.GetNodesInfo());
-            
+
             // 绘制新形状
             var newColor = shape.GetNodesInfo()[0].color;
             NodesUtility.SetShapeColor(shape, newColor);

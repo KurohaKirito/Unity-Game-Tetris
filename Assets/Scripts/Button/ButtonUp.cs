@@ -4,16 +4,11 @@ using Utility;
 
 namespace Button
 {
-    public class ButtonUp : MonoBehaviour, IPointerDownHandler//, IPointerUpHandler
+    public class ButtonUp : MonoBehaviour, IPointerDownHandler
     {
         public void OnPointerDown(PointerEventData eventData)
         {
             InputUtility.rotate?.Invoke();
         }
-
-        // public void OnPointerUp(PointerEventData eventData)
-        // {
-        //     
-        // }
     }
 }

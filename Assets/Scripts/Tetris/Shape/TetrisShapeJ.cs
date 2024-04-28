@@ -8,7 +8,7 @@ namespace Tetris.Shape
         public TetrisShapeJ(Vector2Int origin, Sprite color)
         {
             nodes = new TetrisNodeInfo[4];
-            
+
             nodes[0] = new TetrisNodeInfo(origin, color);
             nodes[1] = nodes[0] + new Vector2Int(+1, -1);
             nodes[2] = nodes[0] + new Vector2Int(0, -1);

@@ -41,7 +41,7 @@ namespace Tetris.Manager
             {
                 return;
             }
-            
+
             forwardColors = nodeColorList;
             backColor = backNodeColor;
 
@@ -50,7 +50,7 @@ namespace Tetris.Manager
                 colorDictionary.Add(forwardColors[i].name, i);
             }
         }
-        
+
         /// <summary>
         /// 生成初始形状
         /// </summary>
@@ -60,7 +60,7 @@ namespace Tetris.Manager
             RandomUtility.RandomShape(forwardColors, ref TipsManager.tipOne);
             RandomUtility.RandomShape(forwardColors, ref TipsManager.tipTwo);
         }
-        
+
         /// <summary>
         /// 生成下一个形状
         /// </summary>
@@ -86,7 +86,7 @@ namespace Tetris.Manager
             // 背景返回 -1
             return -1;
         }
-        
+
         /// <summary>
         /// 获取颜色
         /// </summary>

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.UI;
-
 using Tetris.Manager;
 using Tetris.Shape;
 
@@ -63,7 +61,7 @@ namespace Tetris.Utility
 
             return nodes;
         }
-        
+
         /// <summary>
         /// 刷新当前形状的显示
         /// </summary>
@@ -93,7 +91,7 @@ namespace Tetris.Utility
 
             return isGameOver;
         }
-        
+
         /// <summary>
         /// 重置所有的 Nodes
         /// </summary>
@@ -117,7 +115,7 @@ namespace Tetris.Utility
                     TipsManager.GetTipOneNodeColor(rowIndex, columnIndex).sprite = originColor;
                 }
             }
-            
+
             // 提示 Two
             for (var rowIndex = 0; rowIndex < TipsManager.RowCount; rowIndex++)
             {

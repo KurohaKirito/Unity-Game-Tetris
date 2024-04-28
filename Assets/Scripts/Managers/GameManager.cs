@@ -22,7 +22,7 @@ namespace Managers
 
         [Header("运行状态")]
         public bool isPlay;
-        
+
         [Header("震感反馈")]
         public bool vibrantEnable;
 
@@ -38,7 +38,7 @@ namespace Managers
 
         [Header("背景色")]
         public Sprite backColor;
-        
+
         [Header("结点颜色")]
         public List<Sprite> nodeColors;
 
@@ -54,18 +54,12 @@ namespace Managers
         private Transform tipOneRowsParent;
         [SerializeField]
         private Transform tipTwoRowsParent;
-        
+
         private static Color ColorPause => new Color(246 / 255f, 93 / 255f, 59 / 255f);
         private static Color ColorPlay => new Color(40 / 255f, 164 / 255f, 44 / 255f);
 
-        /// <summary>
-        /// 单例模式
-        /// </summary>
         private static GameManager instance;
 
-        /// <summary>
-        /// 单例模式
-        /// </summary>
         public static GameManager Instance
         {
             get => instance;
@@ -78,17 +72,11 @@ namespace Managers
             }
         }
 
-        /// <summary>
-        /// 单例模式
-        /// </summary>
         private void Awake()
         {
             Instance = this;
         }
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
         private void Start()
         {
             // 初始化存档路径以及文件信息
@@ -120,25 +108,19 @@ namespace Managers
             }
         }
 
-        /// <summary>
-        /// 帧更新
-        /// </summary>
         private void Update()
         {
-            if (isPlay && !DataManager.FlagGameOver)
+            if (isPlay && DataManager.FlagGameOver == false)
             {
                 InputUtility.OnUpdate();
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 ExitGame();
             }
         }
 
-        /// <summary>
-        /// 注册输入事件
-        /// </summary>
         private void RegisterInput()
         {
             InputUtility.rotate = () =>
@@ -153,10 +135,11 @@ namespace Managers
             {
                 if (isPlay)
                 {
-                    MoveUtility.MoveLeft(RandomManager.currentTetrisShape.shape, backColor);
+                    MoveLeft();
                     ClockUtility.UpdateClock(clockLeft, SPEED_LEFT, 0, -1);
                 }
             };
+
             InputUtility.cancelMoveLeft = () =>
             {
                 if (isPlay)
@@ -169,10 +152,11 @@ namespace Managers
             {
                 if (isPlay)
                 {
-                    MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor);
+                    MoveRight();
                     ClockUtility.UpdateClock(clockRight, SPEED_RIGHT, 0, -1);
                 }
             };
+
             InputUtility.cancelMoveRight = () =>
             {
                 if (isPlay)
@@ -185,10 +169,11 @@ namespace Managers
             {
                 if (isPlay)
                 {
-                    MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor);
+                    MoveDown();
                     ClockUtility.UpdateClock(clockDown, SPEED_DOWN, 0, -1);
                 }
             };
+
             InputUtility.cancelMoveDown = () =>
             {
                 if (isPlay)
@@ -198,9 +183,21 @@ namespace Managers
             };
         }
 
-        /// <summary>
-        /// 开始游戏
-        /// </summary>
+        private void MoveRight()
+        {
+            MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor);
+        }
+
+        private void MoveLeft()
+        {
+            MoveUtility.MoveLeft(RandomManager.currentTetrisShape.shape, backColor);
+        }
+
+        private void MoveDown()
+        {
+            MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor);
+        }
+
         public void StartGame()
         {
             // 开始游戏
@@ -208,7 +205,7 @@ namespace Managers
             DataManager.FlagGameOver = false;
             gameArea.gameObject.SetActive(true);
             startArea.gameObject.SetActive(false);
-            
+
             // 立即显示高亮提示
             PredictManager.UpdatePredictShape(backColor, RandomManager.currentTetrisShape.shape.GetNodesInfo());
 
@@ -217,36 +214,27 @@ namespace Managers
             TipsManager.RefreshTipTwoDisplay(backColor);
             NodesUtility.RefreshCurrentShapeDisplay(backColor);
 
-            // 创建定时器
-            clockDown = ClockUtility.RegisterClock(DataManager.GetDownSpeed(), -1,
-                () => MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor));
-            clockLeft = ClockUtility.RegisterClock(SPEED_LEFT, 0,
-                () => MoveUtility.MoveLeft(RandomManager.currentTetrisShape.shape, backColor));
-            clockRight = ClockUtility.RegisterClock(SPEED_RIGHT, 0,
-                () => MoveUtility.MoveRight(RandomManager.currentTetrisShape.shape, backColor));
+            // 初始化定时器
+            clockDown = ClockUtility.RegisterClock(DataManager.GetDownSpeed(), -1, () => MoveUtility.MoveDown(RandomManager.currentTetrisShape.shape, backColor));
+            clockLeft = ClockUtility.RegisterClock(SPEED_LEFT, 0, MoveLeft);
+            clockRight = ClockUtility.RegisterClock(SPEED_RIGHT, 0, MoveRight);
 
             // 初始化玩家输入响应事件
             RegisterInput();
         }
 
-        /// <summary>
-        /// 退出游戏
-        /// </summary>
         public void ExitGame()
         {
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-#endif
+            #endif
+
             Application.Quit();
         }
 
-        /// <summary>
-        /// 切换游戏状态
-        /// Play Pause
-        /// </summary>
         public void ChangeGameStatus()
         {
-            if (!DataManager.FlagGameOver)
+            if (DataManager.FlagGameOver == false)
             {
                 if (Time.timeScale == 0)
                 {
@@ -259,9 +247,6 @@ namespace Managers
             }
         }
 
-        /// <summary>
-        /// 暂停
-        /// </summary>
         private void SetPause()
         {
             // 暂停游戏
@@ -283,19 +268,16 @@ namespace Managers
             };
         }
 
-        /// <summary>
-        /// 继续
-        /// </summary>
         private void SetPlay()
         {
             // 恢复游戏状态
             isPlay = true;
             Time.timeScale = 1;
             statusSwitch.sprite = statusSpritePause;
-            
+
             // 更新按键状态
             InputUtility.UpdateKeyBoard();
-            
+
             // 更新按钮外观设置
             var colorBlock = statusSwitch.GetComponent<UnityEngine.UI.Button>().colors;
             statusSwitch.GetComponent<UnityEngine.UI.Button>().colors = new ColorBlock
@@ -310,9 +292,6 @@ namespace Managers
             };
         }
 
-        /// <summary>
-        /// 设置游戏结束
-        /// </summary>
         public void GameOver()
         {
             // 游戏结束
@@ -326,9 +305,6 @@ namespace Managers
             DataManager.SaveData();
         }
 
-        /// <summary>
-        /// 重新开始
-        /// </summary>
         public void ReStartGame()
         {
             // 游戏重开
@@ -356,9 +332,6 @@ namespace Managers
             NodesUtility.RefreshCurrentShapeDisplay(backColor);
         }
 
-        /// <summary>
-        /// 更新下落速度
-        /// </summary>
         public void UpdateDownSpeed(float speed)
         {
             ClockUtility.UpdateClock(clockDown, Input.GetKey(KeyCode.S) ? SPEED_DOWN : speed);

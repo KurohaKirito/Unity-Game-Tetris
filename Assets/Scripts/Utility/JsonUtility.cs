@@ -23,7 +23,7 @@ namespace Utility
             {
                 saveFilePath = value;
 
-                if (!Directory.Exists(value))
+                if (Directory.Exists(value) == false)
                 {
                     Directory.CreateDirectory(value);
                 }
@@ -49,7 +49,7 @@ namespace Utility
                 {
                     return;
                 }
-                
+
                 using (File.Create(value)) { }
             }
         }
@@ -67,21 +67,21 @@ namespace Utility
         [Conditional("UNITY_ANDROID")]
         private static void InitAndroid()
         {
-            SaveFilePath= Application.persistentDataPath + "/Saves/";
+            SaveFilePath = Application.persistentDataPath + "/Saves/";
             SaveFilePathName = SaveFilePath + "Save.json";
         }
-        
+
         [Conditional("UNITY_STANDALONE_WIN")]
         private static void InitWindows()
         {
-            SaveFilePath= Application.dataPath + "/Saves/";
+            SaveFilePath = Application.dataPath + "/Saves/";
             SaveFilePathName = SaveFilePath + "Save.json";
         }
-        
+
         [Conditional("UNITY_EDITOR")]
         private static void InitEditor()
         {
-            SaveFilePath= Application.dataPath + "/Saves/";
+            SaveFilePath = Application.dataPath + "/Saves/";
             SaveFilePathName = SaveFilePath + "Save.json";
         }
 
@@ -95,7 +95,7 @@ namespace Utility
             var serializer = new JsonSerializer();
             serializer.Serialize(stringWriter, data);
             var jsonDataString = stringWriter.GetStringBuilder().ToString();
-            
+
             File.WriteAllText(SaveFilePathName, jsonDataString, Encoding.UTF8);
         }
 
@@ -108,10 +108,10 @@ namespace Utility
         {
             var serializer = new JsonSerializer();
             var jsonString = File.ReadAllText(SaveFilePathName);
-            
+
             using var stringReader = new StringReader(jsonString);
             using var jsonTextReader = new JsonTextReader(stringReader);
-            
+
             var result = serializer.Deserialize(jsonTextReader, typeof(T)) as T;
             return result;
         }

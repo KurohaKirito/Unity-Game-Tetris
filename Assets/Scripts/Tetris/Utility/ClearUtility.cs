@@ -14,28 +14,28 @@ namespace Tetris.Utility
         public static void ClearJudge<T>(T shape, ref List<int> clearRows) where T : Shape.TetrisShape
         {
             clearRows ??= new List<int>();
-            
+
             var nodeInfos = shape.GetNodesInfo();
-            
+
             for (var index = 0; index < nodeInfos.Length; index++)
             {
                 var rowIndex = nodeInfos[index].position.x;
-                
-                if (!JudgeOneRowCompleted(rowIndex))
+
+                if (JudgeOneRowCompleted(rowIndex) == false)
                 {
                     continue;
                 }
-                
-                if (!clearRows.Exists(n => n == rowIndex))
+
+                if (clearRows.Exists(n => n == rowIndex) == false)
                 {
                     clearRows.Add(rowIndex);
                 }
             }
-            
+
             // 由于消除时的逻辑必须按照顺序依次消除, 因此必须进行排序
             clearRows.Sort();
         }
-        
+
         /// <summary>
         /// 判断特定行是否可以被消除
         /// </summary>
@@ -44,7 +44,7 @@ namespace Tetris.Utility
         private static bool JudgeOneRowCompleted(int rowIndex)
         {
             var completed = true;
-            
+
             for (var columnIndex = 0; columnIndex < NodesManager.ColumnCount; columnIndex++)
             {
                 var color = NodesManager.GetNodeColor(rowIndex, columnIndex).sprite;
@@ -56,7 +56,7 @@ namespace Tetris.Utility
 
             return completed;
         }
-        
+
         /// <summary>
         /// 消除所有等待消除的行
         /// </summary>
@@ -65,18 +65,18 @@ namespace Tetris.Utility
             // 重点:
             // 1. foreach 中不允许对被遍历对象进行更新, 即使调用的方法对遍历者进行了更新也不行
             // 2. 由于消除会导致上方全部行下移, 因此必须由上向下消除
-            
+
             var endIndex = NodesManager.clearRowIndexList.Count - 1;
-            
+
             for (var index = endIndex; index >= 0; index--)
             {
                 ClearOneRow(NodesManager.clearRowIndexList[index]);
             }
-            
+
             DataManager.UpdateScoreLevel(DataManager.GetScoreOnClear(NodesManager.clearRowIndexList.Count));
             NodesManager.clearRowIndexList.Clear();
         }
-        
+
         /// <summary>
         /// 消除指定的一行
         /// </summary>

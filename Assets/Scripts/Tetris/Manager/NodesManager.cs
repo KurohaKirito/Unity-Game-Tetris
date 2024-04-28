@@ -22,7 +22,7 @@ namespace Tetris.Manager
         /// 当前需要消除的行索引
         /// </summary>
         public static List<int> clearRowIndexList;
-        
+
         /// <summary>
         /// 行数
         /// </summary>
@@ -32,7 +32,7 @@ namespace Tetris.Manager
         /// 列数
         /// </summary>
         public static int ColumnCount => playerAreaNodes[0].Count;
-        
+
         /// <summary>
         /// 行边界索引
         /// </summary>
@@ -69,7 +69,7 @@ namespace Tetris.Manager
         {
             return playerAreaNodes[rowIndex][columnIndex];
         }
-        
+
         /// <summary>
         /// 获取指定坐标结点的颜色
         /// </summary>

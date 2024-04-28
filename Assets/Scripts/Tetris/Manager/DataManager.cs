@@ -82,7 +82,7 @@ namespace Tetris.Manager
         /// 死亡线索引
         /// </summary>
         public static int DeathLineIndex { get; private set; }
-        
+
         /// <summary>
         /// 玩家数据
         /// </summary>
@@ -129,13 +129,13 @@ namespace Tetris.Manager
         private static HighestScore PlayerHighestScore
         {
             get => string.IsNullOrEmpty(playerData.highestScore.score)
-                    ? new HighestScore
-                    {
-                        score = "0",
-                        date = DateTime.Now.ToString("yyyy/MM/dd"),
-                        time = DateTime.Now.ToLongTimeString()
-                    }
-                    : playerData.highestScore;
+                ? new HighestScore
+                {
+                    score = "0",
+                    date = DateTime.Now.ToString("yyyy/MM/dd"),
+                    time = DateTime.Now.ToLongTimeString()
+                }
+                : playerData.highestScore;
             set
             {
                 playerData.highestScore = value;
@@ -166,21 +166,21 @@ namespace Tetris.Manager
                 }
             }
         }
-        
+
         /// <summary>
         /// 读取存档
         /// </summary>
         public static PlayerData LoadData()
         {
             var data = JsonUtility.LoadData<PlayerData>();
-            
+
             if (data == null)
             {
                 if (GameManager.Instance.isLogEnable)
                 {
                     Debug.Log($"当前没有存档, 初始化游戏!");
                 }
-                
+
                 UpdateScoreLevel(init: true);
             }
             else if (data.isGameOver)
@@ -189,7 +189,7 @@ namespace Tetris.Manager
                 {
                     Debug.Log($"检测到存档, 但是游戏已经结束, 重置游戏!");
                 }
-                
+
                 playerData = data;
                 GameManager.Instance.ReStartGame();
             }
@@ -199,12 +199,12 @@ namespace Tetris.Manager
                 {
                     Debug.Log($"检测到存档, 恢复存档数据!");
                 }
-                
+
                 playerData = data;
                 UpdateScoreLevel(loadSave: true);
                 ResumeNodes(data);
             }
-            
+
             return data;
         }
 
@@ -235,7 +235,7 @@ namespace Tetris.Manager
             LoadShape(data.tipOne, out TipsManager.tipOne);
             LoadShape(data.tipTwo, out TipsManager.tipTwo);
         }
-        
+
         /// <summary>
         /// 读取存档中的结点信息并返回游戏中可用的结点信息
         /// </summary>
@@ -243,7 +243,7 @@ namespace Tetris.Manager
         {
             var color = RandomManager.GetColorByIndex(shape.colorIndex);
             var type = shape.type;
-            
+
             shapeInfo = new ShapeInfo
             {
                 shape = RandomUtility.CreateShape(type, color),
@@ -251,7 +251,7 @@ namespace Tetris.Manager
                 type = type
             };
         }
-        
+
         /// <summary>
         /// 保存存档
         /// 存档是必须保证 "当前结点" 和 "高亮结点" 没有显示
@@ -276,17 +276,19 @@ namespace Tetris.Manager
             };
 
             // 提示 One 结点形状与颜色写入存档
-            playerData.tipOne = new Data.ShapeInfo{
+            playerData.tipOne = new Data.ShapeInfo
+            {
                 colorIndex = RandomManager.GetColorIndexByName(TipsManager.tipOne.color.name),
                 type = TipsManager.tipOne.type
             };
 
             // 提示 Two 结点形状与颜色写入存档
-            playerData.tipTwo = new Data.ShapeInfo{
+            playerData.tipTwo = new Data.ShapeInfo
+            {
                 colorIndex = RandomManager.GetColorIndexByName(TipsManager.tipTwo.color.name),
                 type = TipsManager.tipTwo.type
             };
-            
+
             // 写入存档数据
             JsonUtility.SaveData(playerData);
         }
@@ -304,7 +306,7 @@ namespace Tetris.Manager
             PlayerScore += reset ? -PlayerScore : score;
 
             // 更新最高分
-            if(init)
+            if (init)
             {
                 UpdateHighestScore(useNow: true);
             }
@@ -316,7 +318,7 @@ namespace Tetris.Manager
             {
                 UpdateHighestScore(useSave: true);
             }
-            else if(PlayerScore > int.Parse(PlayerHighestScore.score))
+            else if (PlayerScore > int.Parse(PlayerHighestScore.score))
             {
                 UpdateHighestScore(useNow: true);
             }
@@ -387,7 +389,7 @@ namespace Tetris.Manager
 
             return level;
         }
-        
+
         /// <summary>
         /// 获取当前的下落速度
         /// </summary>
@@ -444,7 +446,7 @@ namespace Tetris.Manager
                 4 => 100,
                 _ => 10
             };
-            
+
             return baseScore + PlayerLevel * rowNumber;
         }
     }

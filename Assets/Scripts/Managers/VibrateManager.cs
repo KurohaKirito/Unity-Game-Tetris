@@ -5,14 +5,8 @@ namespace Managers
 {
     public class VibrateManager : MonoBehaviour
     {
-        /// <summary>
-        /// 单例模式
-        /// </summary>
         private static VibrateManager instance;
 
-        /// <summary>
-        /// 单例模式
-        /// </summary>
         public static VibrateManager Instance
         {
             get => instance;
@@ -25,31 +19,17 @@ namespace Managers
             }
         }
 
-        /// <summary>
-        /// 单例模式
-        /// On Awake, we initialize our iOS haptics.
-        /// Of course, this only needs to be done when on iOS, or targeting iOS. 
-        /// A test will be done and this method will do nothing if running on anything else
-        /// </summary>
         private void Awake()
         {
             Instance = this;
             MMNViOS.iOSInitializeHaptics();
         }
 
-        /// <summary>
-        /// On Disable, we release our iOS haptics (to save memory and avoid garbage).
-        /// Of course, this only needs to be done when on iOS, or targeting iOS. 
-        /// A test will be done and this method will do nothing if running on anything else
-        /// </summary>
         private void OnDisable()
         {
             MMNViOS.iOSReleaseHaptics();
         }
 
-        /// <summary>
-        /// The following methods are bound (via the inspector) to buttons in the demo scene, and will call the corresponding vibration methods
-        /// </summary>
         /// <summary>
         /// Triggers the default Unity vibration, without any control over duration, pattern or amplitude
         /// </summary>

@@ -14,29 +14,29 @@ namespace Utility
         /// 定时器标签
         /// </summary>
         public int tag;
-        
+
         /// <summary>
         /// 已计时时间
         /// </summary>
         public float timed;
-        
+
         /// <summary>
         /// 定时器总时长
         /// </summary>
         public float life;
-        
+
         /// <summary>
         /// 剩余计时次数
         /// </summary>
         public int count;
-        
+
         /// <summary>
         /// 触发委托
         /// </summary>
         [NonSerialized]
         public Action action;
     }
-    
+
     /// <summary>
     /// 定时器管理类
     /// </summary>
@@ -63,17 +63,17 @@ namespace Utility
                 return;
             }
 
-            for (var i = 0; i < schedules.Count; ++i)
+            for (var index = 0; index < schedules.Count; ++index)
             {
-                var currentScheduler = schedules[i];
-                
+                var currentScheduler = schedules[index];
+
                 // 移除空定时器
                 if (currentScheduler == null)
                 {
-                    UnRegisterClockByIndex(i--);
+                    UnRegisterClockByIndex(index--);
                     continue;
                 }
-                
+
                 // 定时器次数剩余为空, 不触发任何操作, 需手动移除
                 if (currentScheduler.count == 0)
                 {
@@ -84,14 +84,14 @@ namespace Utility
                 currentScheduler.timed += Time.deltaTime;
 
                 // 定时未结束, 返回继续定时
-                if (!(currentScheduler.timed >= currentScheduler.life))
+                if (currentScheduler.timed < currentScheduler.life)
                 {
                     continue;
                 }
-                
+
                 // 定时结束, 触发委托
                 currentScheduler.action();
-                    
+
                 // 重置定时
                 currentScheduler.timed -= currentScheduler.life;
 
@@ -100,12 +100,12 @@ namespace Utility
                 {
                     continue;
                 }
-                    
+
                 // 减少一次定时次数
                 --currentScheduler.count;
             }
         }
-        
+
         /// <summary>
         /// 注册定时器
         /// </summary>
@@ -131,7 +131,7 @@ namespace Utility
             // 返回标签
             return clockTag;
         }
-        
+
         /// <summary>
         /// 通过标签获取定时器
         /// </summary>
@@ -164,12 +164,12 @@ namespace Utility
             {
                 return;
             }
-            
+
             clock.life = life;
             clock.timed = timed;
             clock.count = count;
         }
-        
+
         /// <summary>
         /// 更新特定定时器的定时长度
         /// </summary>
@@ -183,11 +183,11 @@ namespace Utility
             {
                 return;
             }
-            
+
             clock.life = life;
             clock.count = count;
         }
-        
+
         /// <summary>
         /// 更新特定定时器的定时长度
         /// </summary>
@@ -200,7 +200,7 @@ namespace Utility
             {
                 return;
             }
-            
+
             clock.life = life;
         }
 
@@ -216,6 +216,7 @@ namespace Utility
             {
                 return;
             }
+
             clock.count = count;
         }
 
@@ -229,20 +230,20 @@ namespace Utility
             {
                 return;
             }
-            
+
             schedules[index] = schedules[schedules.Count - 1];
             schedules.RemoveAt(schedules.Count - 1);
         }
-        
+
         /// <summary>
         /// 通过标签移除定时器
         /// </summary>
         /// <param name="tag">定时器标签</param>
         public static void UnRegisterClockByTag(int tag)
         {
-            for(var index = 0; index < schedules.Count; index++)
+            for (var index = 0; index < schedules.Count; index++)
             {
-                if(schedules[index].tag == tag)
+                if (schedules[index].tag == tag)
                 {
                     UnRegisterClockByIndex(index);
                 }

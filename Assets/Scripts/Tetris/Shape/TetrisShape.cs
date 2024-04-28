@@ -70,12 +70,12 @@ namespace Tetris.Shape
         /// 结点
         /// </summary>
         protected TetrisNodeInfo[] nodes;
-        
+
         /// <summary>
         /// 旋转类型
         /// </summary>
         protected EM_ACTION_TYPE rotateType;
-        
+
         /// <summary>
         /// 结点个数
         /// </summary>
@@ -105,7 +105,7 @@ namespace Tetris.Shape
                 EM_ACTION_TYPE.Right => RotateDown(immediately),
                 _ => throw new ArgumentOutOfRangeException()
             };
-            
+
             return newNodes;
         }
 
@@ -167,7 +167,7 @@ namespace Tetris.Shape
         protected RotateRule rotateRuleRight = new RotateRule(-1, 1, true);
 
         #endregion
-    
+
         #region Private Function
 
         /// <summary>
@@ -253,6 +253,7 @@ namespace Tetris.Shape
                 RotateAllNode(nodes, rule);
                 return null;
             }
+
             // ReSharper disable once RedundantIfElseBlock
             else
             {

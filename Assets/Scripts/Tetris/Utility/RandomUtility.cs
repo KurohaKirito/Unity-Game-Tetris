@@ -16,8 +16,8 @@ namespace Tetris.Utility
         {
             var color = RandomColor(colors);
             var type = RandomShapeTypeEasyVersion();
-            
-            while (type == TipsManager.tipOne.type && type == TipsManager.tipTwo.type )
+
+            while (type == TipsManager.tipOne.type && type == TipsManager.tipTwo.type)
             {
                 type = RandomShapeType<EM_SHAPE_TYPE>();
             }
@@ -72,7 +72,7 @@ namespace Tetris.Utility
             var typeIndex = Random.Range(0, enums.Length);
             return (T) enums.GetValue(typeIndex);
         }
-        
+
         /// <summary>
         /// 随机一个形状类型
         /// 简易版本
@@ -82,37 +82,37 @@ namespace Tetris.Utility
         {
             EM_SHAPE_TYPE type;
             var number = Random.Range(0, 100);
-            
+
             // I : 20
             if (number >= 0 && number < 20)
             {
                 type = EM_SHAPE_TYPE.ShapeI;
             }
-            
+
             // J : 10
             else if (number >= 20 && number < 30)
             {
                 type = EM_SHAPE_TYPE.ShapeJ;
             }
-            
+
             // L : 10
             else if (number >= 30 && number < 40)
             {
                 type = EM_SHAPE_TYPE.ShapeL;
             }
-            
+
             // O : 16
             else if (number >= 40 && number < 56)
             {
                 type = EM_SHAPE_TYPE.ShapeO;
             }
-            
+
             // S : 14
             else if (number >= 56 && number < 70)
             {
                 type = EM_SHAPE_TYPE.ShapeS;
             }
-            
+
             // T : 16
             else if (number >= 70 && number < 86)
             {
@@ -124,7 +124,7 @@ namespace Tetris.Utility
             {
                 type = EM_SHAPE_TYPE.ShapeZ;
             }
-            
+
             return type;
         }
     }
